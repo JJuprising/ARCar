@@ -188,6 +188,7 @@ public class GateObserverEventHandler : MonoBehaviour
         
         //识别物体的名字
         var name = mObserverBehaviour.TargetName;
+        Debug.Log(name);
         //识别物体当前位置
         Vector3 GateVec = this.transform.position;
         if (name == "gate1")
@@ -195,7 +196,8 @@ public class GateObserverEventHandler : MonoBehaviour
             
             //_ = gameObject.AddComponent<Wire>();
             //记录识别状态
-            StaticData.GateObserved[0] = true;//NO.0 was marked
+            StaticData.GateObserved[0] = 1;//NO.0 was marked
+            Debug.Log("识别到1号门");
             //识别到Gate1
             //生成金属门
             var GatePos = GateVec;
@@ -212,7 +214,8 @@ public class GateObserverEventHandler : MonoBehaviour
         else if (name == "gate2")
         {
             //记录识别状态
-            StaticData.GateObserved[1] = true;//NO.1 was marked
+            StaticData.GateObserved[1] = 1;//NO.1 was marked
+            Debug.Log("识别到2号门");
             //识别到gate2后,生成道具盒子
             //存储道具盒子的坐标
             var Box1Pos = GateVec;
@@ -263,7 +266,7 @@ public class GateObserverEventHandler : MonoBehaviour
         else if (name == "gate3")
         {
             //记录识别状态
-            StaticData.GateObserved[2] = true;//NO.2 was marked
+            StaticData.GateObserved[2] = 1;//NO.2 was marked
             //识别到gate3后,生成金币
             var CoinPos = GateVec;
             GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject))) as GameObject;
@@ -290,7 +293,7 @@ public class GateObserverEventHandler : MonoBehaviour
         else if (name == "gate4")
         {
             //记录识别状态
-            StaticData.GateObserved[3] = true;//NO.3 was marked
+            StaticData.GateObserved[3] = 1;//NO.3 was marked
             //识别到gate4后
             //生成金属门
             var GatePos = GateVec;
