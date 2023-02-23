@@ -190,142 +190,99 @@ public class GateObserverEventHandler : MonoBehaviour
         var name = mObserverBehaviour.TargetName;
         Debug.Log(name);
         //识别物体当前位置
-        Vector3 GateVec = this.transform.position;
-        if (name == "gate1")
+        Vector3 GateVec = transform.position;
+
+        switch (name)
         {
-            
-            //_ = gameObject.AddComponent<Wire>();
-            //记录识别状态
-            StaticData.GateObserved[0] = 1;//NO.0 was marked
-            Debug.Log("识别到1号门");
-            //识别到Gate1
-            //生成金属门
-            //var GatePos = GateVec;
-            //GameObject GateObject = Instantiate(Resources.Load("SteelGate", typeof(GameObject))) as GameObject;
-            //GatePos.y = (float)(GateVec.y - 0.9);//设置金属门位置
-            //GatePos.z = (float)(GateVec.z + 0.02);
-            //GateObject.transform.position = GatePos;
-            //GateObject.tag = "Gate";//添加标签
-            //GateObject.transform.parent = this.transform;//绑定道具的父元素
-            
-            if (TrialMgr.Instance.gate1 != null)
-            {
-                TrialMgr.Instance.gate1.transform.position = GateVec;   
-            }
-            //生成开始动画
+            case "gate1":
+                Debug.Log("识别到1号门");
+                if (StaticData.GateObserved[0] == 0)//生成开始装饰等
+                {
+                    if (TrialMgr.Instance.gate1 != null)
+                    {
+                        TrialMgr.Instance.gate1.transform.position = GateVec;//同步这个门的位置
+                    }
+                }
+
+                StaticData.GateObserved[0] = 1;//NO.0 was marked
+                
+                
+                //生成开始动画(倒计时)，todo
+                break;
+            case "gate2":
+                
+                Debug.Log("识别到2号门");
+                //识别到gate2后,生成道具盒子
+                if (StaticData.GateObserved[1]==0)
+                {
+                    //存储道具盒子的坐标
+                    var Box1Pos = GateVec;
+                    var Box2Pos = GateVec;
+                    var Box3Pos = GateVec;
+                    //生成道具盒子
+                    GameObject GoldBox1 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
+                    GameObject GoldBox2 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
+                    GameObject GoldBox3 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
+                    //设置道具盒的位置
+                    //1号盒子
+                    Box1Pos.y = (float)(GateVec.y - 0.6);//下移
+                    Box1Pos.x = (float)(GateVec.x - 0.8);//左移
+                    GoldBox1.transform.position = Box1Pos;
+                    //2号盒子
+                    Box2Pos.y = (float)(GateVec.y - 0.6);//下移
+                    GoldBox2.transform.position = Box2Pos;
+                    //3号盒子
+                    Box3Pos.y = (float)(GateVec.y - 0.6);//下移
+                    Box3Pos.x = (float)(GateVec.x + 0.8);//右移
+                    GoldBox3.transform.position = Box3Pos;
+                    //添加标签
+                    GoldBox1.tag = "GoldBox";
+                    GoldBox2.tag = "GoldBox";
+                    GoldBox3.tag = "GoldBox";
+                    //添加旋转脚本
+                    GoldBox1.AddComponent<spin>();
+                    GoldBox2.AddComponent<spin>();
+                    GoldBox3.AddComponent<spin>();
+                }
+                //记录识别状态
+                StaticData.GateObserved[1] = 1;//NO.1 was marked
+                if (TrialMgr.Instance.gate2 != null)
+                {
+                    TrialMgr.Instance.gate2.transform.position = GateVec;//同步这个门的位置
+                }
+                break;
+            case "gate3":
+                if (StaticData.GateObserved[2]==0)
+                {
+                    //识别到gate3后,生成金币
+                    GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+                    var CoinPos = GateVec - Vector3.up * 0.6f;
+                    Coin.transform.position = CoinPos;
+                    //设置标签
+                    Coin.tag = "Coin";
+                    //添加旋转脚本
+                    Coin.AddComponent<spin>();
+                }
+                //记录识别状态
+                StaticData.GateObserved[2] = 1;//NO.2 was marked
+                if (TrialMgr.Instance.gate3 != null)
+                {
+                    TrialMgr.Instance.gate3.transform.position = GateVec;//同步这个门的位置
+                }
+                break;
+            case "gate4":
+                //记录识别状态
+                StaticData.GateObserved[3] = 1;//NO.3 was marked
+                //识别到gate4后
+                if (TrialMgr.Instance.gate4 != null)
+                {
+                    TrialMgr.Instance.gate4.transform.position = GateVec;//同步这个门的位置
+                }
+                break;
+            default:
+                break;
         }
-        else if (name == "gate2")
-        {
-            //记录识别状态
-            StaticData.GateObserved[1] = 1;//NO.1 was marked
-            Debug.Log("识别到2号门");
-            //识别到gate2后,生成道具盒子
-            //存储道具盒子的坐标
-            var Box1Pos = GateVec;
-            var Box2Pos = GateVec;
-            var Box3Pos = GateVec;
-            //生成道具盒子
-            GameObject GoldBox1 = Instantiate(Resources.Load("GoldBox", typeof(GameObject))) as GameObject;
-            GameObject GoldBox2 = Instantiate(Resources.Load("GoldBox", typeof(GameObject))) as GameObject;
-            GameObject GoldBox3 = Instantiate(Resources.Load("GoldBox", typeof(GameObject))) as GameObject;
-            //设置道具盒的位置
-            //1号盒子
-            Box1Pos.y = (float)(GateVec.y - 0.6);//下移
-            Box1Pos.x = (float)(GateVec.x - 0.8);//左移
-            GoldBox1.transform.position = Box1Pos;
-            //2号盒子
-            Box2Pos.y = (float)(GateVec.y - 0.6);//下移
-            GoldBox2.transform.position = Box2Pos;
-            //3号盒子
-            Box3Pos.y = (float)(GateVec.y - 0.6);//下移
-            Box3Pos.x = (float)(GateVec.x + 0.8);//右移
-            GoldBox3.transform.position = Box3Pos;
-            //添加标签
-            GoldBox1.tag = "GoldBox";
-            GoldBox2.tag = "GoldBox";
-            GoldBox3.tag = "GoldBox";
-            //添加旋转脚本
-            GoldBox1.AddComponent<spin>();
-            GoldBox2.AddComponent<spin>();
-            GoldBox3.AddComponent<spin>();
-            //绑定道具的父元素
-            GoldBox1.transform.parent = this.transform;
-            GoldBox2.transform.parent = this.transform;
-            GoldBox3.transform.parent = this.transform;
-
-            //生成绿色门
-            var GatePos = GateVec;
-            GameObject GateObject = Instantiate(Resources.Load("ColorGate", typeof(GameObject))) as GameObject;
-            //设置金属门位置
-            //GatePos.y = (float)(GateVec.y - 0.9);
-            //GatePos.z = (float)(GateVec.z + 0.02);
-            GateObject.transform.position = Box2Pos;
-            
-            //添加标签
-            GateObject.tag = "Gate";
-            //绑定道具的父元素
-            //GateObject.transform.parent = this.transform;
-
-            if (TrialMgr.Instance.gate2 != null)
-            {
-                TrialMgr.Instance.gate2.transform.position = GateVec;
-            }
-        }
-        else if (name == "gate3")
-        {
-            //记录识别状态
-            StaticData.GateObserved[2] = 1;//NO.2 was marked
-            //识别到gate3后,生成金币
-            var CoinPos = GateVec;
-            GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject))) as GameObject;
-            //设置金币位置
-            CoinPos.y = (float)(CoinPos.y - 0.6);//下移
-            Coin.transform.position = CoinPos;
-            //设置标签
-            Coin.tag = "Coin";
-            //添加旋转脚本
-            Coin.AddComponent<spin>();
-            //绑定道具的父元素
-            Coin.transform.parent = this.transform;
-
-            //生成绿色门
-            //var GatePos = GateVec;
-            //GameObject GateObject = Instantiate(Resources.Load("ColorGate", typeof(GameObject))) as GameObject;
-            //GatePos.y = (float)(GateVec.y - 0.9);//设置金属门位置
-            //GatePos.z = (float)(GateVec.z + 0.02);
-            //GateObject.transform.position = GatePos;
-            //GateObject.tag = "Gate";//添加标签
-            //GateObject.transform.parent = this.transform;//绑定道具的父元素
-
-            if (TrialMgr.Instance.gate3 != null)
-            {
-                TrialMgr.Instance.gate3.transform.position = GateVec;
-            }
-
-        }
-        else if (name == "gate4")
-        {
-            //记录识别状态
-            StaticData.GateObserved[3] = 1;//NO.3 was marked
-            //识别到gate4后
-            //生成金属门
-            var GatePos = GateVec;
-            GameObject GateObject = Instantiate(Resources.Load("SteelGate", typeof(GameObject))) as GameObject;
-            //设置金属门位置
-            GatePos.y = (float)(GateVec.y - 0.9);
-            GatePos.z = (float)(GateVec.z + 0.02);
-            GateObject.transform.position = GatePos;
-            //添加标签
-            GateObject.tag = "Gate";
-            //绑定道具的父元素
-            GateObject.transform.parent = this.transform;
-
-            if (TrialMgr.Instance.gate4 != null)
-            {
-                TrialMgr.Instance.gate4.transform.position = GateVec;
-            }
-        }
-
+       
 
         OnTargetFound?.Invoke();
     }
@@ -338,17 +295,17 @@ public class GateObserverEventHandler : MonoBehaviour
             var colliderComponents = mObserverBehaviour.GetComponentsInChildren<Collider>(true);
             var canvasComponents = mObserverBehaviour.GetComponentsInChildren<Canvas>(true);
 
-            // Disable rendering:
-            foreach (var component in rendererComponents)
-                component.enabled = false;
+            //// Disable rendering:
+            //foreach (var component in rendererComponents)
+            //    component.enabled = false;
 
-            // Disable colliders:
-            foreach (var component in colliderComponents)
-                component.enabled = false;
+            //// Disable colliders:
+            //foreach (var component in colliderComponents)
+            //    component.enabled = false;
 
-            // Disable canvas':
-            foreach (var component in canvasComponents)
-                component.enabled = false;
+            //// Disable canvas':
+            //foreach (var component in canvasComponents)
+            //    component.enabled = false;
         }
 
         OnTargetLost?.Invoke();

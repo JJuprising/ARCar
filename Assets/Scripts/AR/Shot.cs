@@ -19,6 +19,7 @@ public class Shot : MonoBehaviour
             bullet.transform.localEulerAngles = new Vector3(bulletRot.rotation.x-20, bulletRot.rotation.y, bulletRot.rotation.z); ;
             bulletPos.y -= (float)(0.7);
             bullet.transform.position = bulletPos;
+            bullet.transform.eulerAngles = Camera.main.transform.forward;
             //加力，推动炮弹
             rb.AddForce(Camera.main.transform.forward * 800f);
             //三秒后销毁炮弹
