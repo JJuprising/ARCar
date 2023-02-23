@@ -200,13 +200,13 @@ public class GateObserverEventHandler : MonoBehaviour
             Debug.Log("识别到1号门");
             //识别到Gate1
             //生成金属门
-            var GatePos = GateVec;
-            GameObject GateObject = Instantiate(Resources.Load("SteelGate", typeof(GameObject))) as GameObject;
-            GatePos.y = (float)(GateVec.y - 0.9);//设置金属门位置
-            GatePos.z = (float)(GateVec.z + 0.02);
-            GateObject.transform.position = GatePos;
-            GateObject.tag = "Gate";//添加标签
-            GateObject.transform.parent = this.transform;//绑定道具的父元素
+            //var GatePos = GateVec;
+            //GameObject GateObject = Instantiate(Resources.Load("SteelGate", typeof(GameObject))) as GameObject;
+            //GatePos.y = (float)(GateVec.y - 0.9);//设置金属门位置
+            //GatePos.z = (float)(GateVec.z + 0.02);
+            //GateObject.transform.position = GatePos;
+            //GateObject.tag = "Gate";//添加标签
+            //GateObject.transform.parent = this.transform;//绑定道具的父元素
             //生成开始动画
 
 
