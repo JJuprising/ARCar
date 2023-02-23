@@ -8,3 +8,4 @@ Temp/
 *.sln
 *.csproj
 *.tgz
+*.meta

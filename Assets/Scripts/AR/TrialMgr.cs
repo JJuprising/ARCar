@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class TrialMgr : MonoBehaviour
+public class TrialMgr : Singleton<TrialMgr>
 {
     public Text TimeText;//计时UI
     private float CountTime;//计时
     private int hour,min,sec;
     private string msecStr;
     private bool isShowMlSec=false;//初始化为0
+
+    public GameObject gate1 = null;
+    public GameObject gate2 = null;
+    public GameObject gate3 = null;
+    public GameObject gate4 = null;
+
+
     // Start is called before the first frame update
     void Start()
     {

@@ -200,16 +200,19 @@ public class GateObserverEventHandler : MonoBehaviour
             Debug.Log("识别到1号门");
             //识别到Gate1
             //生成金属门
-            var GatePos = GateVec;
-            GameObject GateObject = Instantiate(Resources.Load("SteelGate", typeof(GameObject))) as GameObject;
-            GatePos.y = (float)(GateVec.y - 0.9);//设置金属门位置
-            GatePos.z = (float)(GateVec.z + 0.02);
-            GateObject.transform.position = GatePos;
-            GateObject.tag = "Gate";//添加标签
-            GateObject.transform.parent = this.transform;//绑定道具的父元素
+            //var GatePos = GateVec;
+            //GameObject GateObject = Instantiate(Resources.Load("SteelGate", typeof(GameObject))) as GameObject;
+            //GatePos.y = (float)(GateVec.y - 0.9);//设置金属门位置
+            //GatePos.z = (float)(GateVec.z + 0.02);
+            //GateObject.transform.position = GatePos;
+            //GateObject.tag = "Gate";//添加标签
+            //GateObject.transform.parent = this.transform;//绑定道具的父元素
+            
+            if (TrialMgr.Instance.gate1 != null)
+            {
+                TrialMgr.Instance.gate1.transform.position = GateVec;   
+            }
             //生成开始动画
-
-
         }
         else if (name == "gate2")
         {
@@ -262,6 +265,11 @@ public class GateObserverEventHandler : MonoBehaviour
             GateObject.tag = "Gate";
             //绑定道具的父元素
             //GateObject.transform.parent = this.transform;
+
+            if (TrialMgr.Instance.gate2 != null)
+            {
+                TrialMgr.Instance.gate2.transform.position = GateVec;
+            }
         }
         else if (name == "gate3")
         {
@@ -289,6 +297,11 @@ public class GateObserverEventHandler : MonoBehaviour
             //GateObject.tag = "Gate";//添加标签
             //GateObject.transform.parent = this.transform;//绑定道具的父元素
 
+            if (TrialMgr.Instance.gate3 != null)
+            {
+                TrialMgr.Instance.gate3.transform.position = GateVec;
+            }
+
         }
         else if (name == "gate4")
         {
@@ -307,6 +320,10 @@ public class GateObserverEventHandler : MonoBehaviour
             //绑定道具的父元素
             GateObject.transform.parent = this.transform;
 
+            if (TrialMgr.Instance.gate4 != null)
+            {
+                TrialMgr.Instance.gate4.transform.position = GateVec;
+            }
         }
 
 
