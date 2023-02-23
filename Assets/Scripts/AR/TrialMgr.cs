@@ -14,7 +14,7 @@ public class TrialMgr : Singleton<TrialMgr>
     public GameObject gate2 = null;
     public GameObject gate3 = null;
     public GameObject gate4 = null;
-
+    public GameObject StartPlace = null;
 
     // Start is called before the first frame update
     void Start()
@@ -28,25 +28,23 @@ public class TrialMgr : Singleton<TrialMgr>
     {
         if (StaticData.GateObserved[3] == 1)
         {
-            //第四个门已经识别，进入计时函数
-            startCountTime();
-        }
-        
+            //第四个门已经识别，判断是否四个门都是别好的
+            int count = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Log(i + ":" + StaticData.GateObserved[i]);
+                count += StaticData.GateObserved[i];
+            }
+            if (count == 4)
+            {
+                StaticData.isObservedFinshed = true;//识别好了4个，标记为true
+                
+            }
 
-    }
-    public void startCountTime()
-    {
-        int count=0;
-        for(int i = 0; i < 4; i++)
-        {
-            Debug.Log(i+":"+StaticData.GateObserved[i]);
-            count += StaticData.GateObserved[i];
         }
-        //统计为4说明四个门都识别了一遍，游戏可以开始
-        if (count == 4)
+        if (isShowMlSec)
         {
-            isShowMlSec = true;
-            //计时时间
+            // 计时时间
             CountTime += Time.deltaTime;
             hour = (int)CountTime / 3600;
             min = (int)(CountTime - hour * 3600) / 60;
@@ -54,5 +52,18 @@ public class TrialMgr : Singleton<TrialMgr>
             msecStr = isShowMlSec ? ("." + ((int)((CountTime - (int)CountTime) * 10)).ToString("D1")) : "";
             TimeText.text = hour.ToString("D2") + ":" + min.ToString("D2") + ":" + sec.ToString("D2") + msecStr;
         }
+
+    }
+   
+  
+    public void startCountTime()
+    {
+        
+        
+        //if (StaticData.isObservedFinshed)
+        //{
+            isShowMlSec = true;//开启计时
+            
+        //}
     }
 }
