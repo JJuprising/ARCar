@@ -53,6 +53,22 @@ public class TrialMgr : Singleton<TrialMgr>
             TimeText.text = hour.ToString("D2") + ":" + min.ToString("D2") + ":" + sec.ToString("D2") + msecStr;
         }
 
+        if(StaticData.GateObserved[3] == 3)
+        {
+            //判断是否识别到了4次
+            //第四个门已经识别，判断是否四个门都是别好的
+            int count = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                Debug.Log(i + ":" + StaticData.GateObserved[i]);
+                count += StaticData.GateObserved[i];
+            }
+            if (count == 12)
+            {
+                //游戏结束，生成结算面板
+
+            }
+        }
     }
    
   

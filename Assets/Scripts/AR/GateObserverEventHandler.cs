@@ -204,7 +204,7 @@ public class GateObserverEventHandler : MonoBehaviour
                     }
                 }
 
-                StaticData.GateObserved[0] = 1;//NO.0 was marked
+                StaticData.GateObserved[0] ++;//NO.0 was marked
                 
                 
                 //生成开始动画(倒计时)，todo
@@ -245,7 +245,7 @@ public class GateObserverEventHandler : MonoBehaviour
                     GoldBox3.AddComponent<spin>();
                 }
                 //记录识别状态
-                StaticData.GateObserved[1] = 1;//NO.1 was marked
+                StaticData.GateObserved[1]++;//NO.1 was marked
                 if (TrialMgr.Instance.gate2 != null)
                 {
                     TrialMgr.Instance.gate2.transform.position = GateVec;//同步这个门的位置
@@ -264,7 +264,7 @@ public class GateObserverEventHandler : MonoBehaviour
                     Coin.AddComponent<spin>();
                 }
                 //记录识别状态
-                StaticData.GateObserved[2] = 1;//NO.2 was marked
+                StaticData.GateObserved[2]++;//NO.2 was marked
                 if (TrialMgr.Instance.gate3 != null)
                 {
                     TrialMgr.Instance.gate3.transform.position = GateVec;//同步这个门的位置
@@ -272,7 +272,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 break;
             case "gate4":
                 //记录识别状态
-                StaticData.GateObserved[3] = 1;//NO.3 was marked
+                StaticData.GateObserved[3]++;//NO.3 was marked
                 //识别到gate4后
                 if (TrialMgr.Instance.gate4 != null)
                 {
@@ -289,6 +289,7 @@ public class GateObserverEventHandler : MonoBehaviour
 
     protected virtual void OnTrackingLost()
     {
+        //
         if (mObserverBehaviour)
         {
             var rendererComponents = mObserverBehaviour.GetComponentsInChildren<Renderer>(true);
