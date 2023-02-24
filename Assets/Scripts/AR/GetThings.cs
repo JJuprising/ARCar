@@ -63,7 +63,7 @@ public class GetThings : MonoBehaviour
     private IEnumerator delaythreeSec()
     {
         Vector3 NumberVec = this.transform.position;
-        NumberVec.z += 2.1f;//图标相对摄像机位置
+        NumberVec.z += 2.5f;//图标相对摄像机位置
         bool isMerge = true;//判断是否已经生成了数字
         float time = 0;//计时
         GameObject Number3Object = null, Number2Object = null, Number1Object = null, GoObject = null;
