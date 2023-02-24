@@ -9,3 +9,5 @@ Temp/
 *.csproj
 *.tgz
 *.meta
+ProjectSettings/ProjectVersion.txt
+*.txt
