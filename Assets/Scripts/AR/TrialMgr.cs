@@ -80,7 +80,7 @@ public class TrialMgr : Singleton<TrialMgr>
         //比赛结束函数
         
         //将用时数据进行存储，如果记录的数组不为空，则比较是否打破记录
-        int MinTime = StaticData.TimeRecord[0];
+        float MinTime = StaticData.TimeRecord[0];
         for(int i = 0; i < StaticData.TimeRecord.Length; i++)
         {
             if (StaticData.TimeRecord[i] == 0)
@@ -89,10 +89,8 @@ public class TrialMgr : Singleton<TrialMgr>
                 StaticData.TimeRecord[i] = min * 60 + sec;
                 if (StaticData.TimeRecord[i] < MinTime)
                 {
-                    //打破记录反馈
-                    GameObject BreakRecordObject;
-                    BreakRecordObject = GameObject.Find("ARCamera").transform.GetChild(1).gameObject;
-                    BreakRecordObject.SetActive(true);
+                    //结束
+                     GameObject.Find("newrecord").SetActive(true);
                 }
             }
             else if(StaticData.TimeRecord[i]<MinTime) {
@@ -100,7 +98,7 @@ public class TrialMgr : Singleton<TrialMgr>
             }
         }
         //显示结算界面，显示三圈花费的时间
-
+        GameObject.Find("BillingPanel").SetActive(true);
     }
 
     public void ResetGame()
