@@ -10,4 +10,8 @@ public static class StaticData
 
     public static int[] GateObserved = {0,0,0,0};//mark 4 gates observed status
 
+
+    public static bool EndTimeTrial = false;//三圈是否结束
+
+    public static int[] TimeRecord = new int[4];//默认只存储四次游戏记录
 }

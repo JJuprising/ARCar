@@ -56,6 +56,16 @@ public class GetThings : MonoBehaviour
 
             Destroy(other.gameObject, 3f);//销毁物体
 
+        }else if(other.gameObject.name == "Finish")
+        {
+            print("通过Finish物体");
+            Destroy(other.gameObject);
+            StaticData.EndTimeTrial = true;//TimeTrial结束标记，交给TrialMgr处理结束界面
+            //生成finish的提示
+            GameObject finishObject = this.transform.GetChild(7).gameObject;
+            finishObject.SetActive(true);
+            Destroy(finishObject,2);
+            //打破记录动画
         }
         
     }
@@ -118,4 +128,5 @@ public class GetThings : MonoBehaviour
         Destroy(GoObject, 0.3f);
         TrialMgr.Instance.startCountTime();//三秒后开始计时
     }
+   
 }
