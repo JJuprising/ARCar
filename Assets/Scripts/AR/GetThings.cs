@@ -24,7 +24,7 @@ public class GetThings : MonoBehaviour
 
         switch (other.gameObject.name){
             case "StartPlace":
-                print("开始");
+                //print("开始");
                 //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
                 StartCoroutine(delaythreeSec());
                 //出发倒计时三秒然后开始的特效
@@ -35,6 +35,7 @@ public class GetThings : MonoBehaviour
                 if (StaticData.CheckGatePassingValidity(0))
                 {
                     StaticData.GateObserved[0]++;
+                    //StaticData.printScore();
                 }
                 
                 break;
@@ -42,18 +43,21 @@ public class GetThings : MonoBehaviour
                 if (StaticData.CheckGatePassingValidity(1))
                 {
                     StaticData.GateObserved[1]++;
+                    //StaticData.printScore();
                 }
                 break;
             case "Gate3_ImageTarget":
                 if (StaticData.CheckGatePassingValidity(2))
                 {
                     StaticData.GateObserved[2]++;
+                    //StaticData.printScore();
                 }
                 break;
             case "Gate4_ImageTarget":
                 if (StaticData.CheckGatePassingValidity(3))
                 {
                     StaticData.GateObserved[3]++;
+                    //StaticData.printScore();
                 }
                 break;
         }

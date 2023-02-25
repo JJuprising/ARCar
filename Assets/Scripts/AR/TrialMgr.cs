@@ -32,7 +32,7 @@ public class TrialMgr : Singleton<TrialMgr>
             int count = 0;
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log(i + ":" + StaticData.GateObserved[i]);
+                //Debug.Log(i + ":" + StaticData.GateObserved[i]);
                 count += StaticData.GateObserved[i];
             }
             if (count == 4)
@@ -60,7 +60,7 @@ public class TrialMgr : Singleton<TrialMgr>
             int count = 0;
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log(i + ":" + StaticData.GateObserved[i]);
+                //Debug.Log(i + ":" + StaticData.GateObserved[i]);
                 count += StaticData.GateObserved[i];
             }
             if (count == 12)
@@ -75,5 +75,20 @@ public class TrialMgr : Singleton<TrialMgr>
     public void startCountTime()
     {
             isShowMlSec = true;//¿ªÆô¼ÆÊ±
+    }
+
+    public void ResetGame()
+    {
+        StaticData.CoinNum = 0;
+        StaticData.isObservedFinshed = false;
+        for (int i = 0; i < StaticData.GateObserved.Length; i++)
+        {
+            StaticData.GateObserved[i] = 0;
+        }
+        isShowMlSec = false;
+        CountTime = 0;
+        TimeText.text = "";
+        hour = min = sec = 0;
+        msecStr = "";
     }
 }

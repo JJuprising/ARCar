@@ -90,7 +90,7 @@ public class GateObserverEventHandler : MonoBehaviour
             name += " (" + vuMarkBehaviour.InstanceId + ")";
         }
 
-        Debug.Log($"Target status: {name} {targetStatus.Status} -- {targetStatus.StatusInfo}");
+        //Debug.Log($"Target status: {name} {targetStatus.Status} -- {targetStatus.StatusInfo}");
 
         HandleTargetStatusChanged(mPreviousTargetStatus.Status, targetStatus.Status);
         HandleTargetStatusInfoChanged(targetStatus.StatusInfo);
@@ -130,11 +130,11 @@ public class GateObserverEventHandler : MonoBehaviour
     {
         if (newStatusInfo == StatusInfo.WRONG_SCALE)
         {
-            Debug.LogErrorFormat("The target {0} appears to be scaled incorrectly. " +
-                                 "This might result in tracking issues. " +
-                                 "Please make sure that the target size corresponds to the size of the " +
-                                 "physical object in meters and regenerate the target or set the correct " +
-                                 "size in the target's inspector.", mObserverBehaviour.TargetName);
+            //Debug.LogErrorFormat("The target {0} appears to be scaled incorrectly. " +
+            //                     "This might result in tracking issues. " +
+            //                     "Please make sure that the target size corresponds to the size of the " +
+            //                     "physical object in meters and regenerate the target or set the correct " +
+            //                     "size in the target's inspector.", mObserverBehaviour.TargetName);
         }
     }
 
@@ -175,15 +175,15 @@ public class GateObserverEventHandler : MonoBehaviour
         GameObject GoldBox3 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
         //设置道具盒的位置
         //1号盒子
-        Box1Pos.y = (float)(GateVec.y - 0.6);//下移
-        Box1Pos.x = (float)(GateVec.x - 0.8);//左移
+        Box1Pos.y = (float)(GateVec.y - 0.95f);//下移
+        Box1Pos.x = (float)(GateVec.x - 0.6);//左移
         GoldBox1.transform.position = Box1Pos;
         //2号盒子
-        Box2Pos.y = (float)(GateVec.y - 0.6);//下移
+        Box2Pos.y = (float)(GateVec.y - 1);//下移
         GoldBox2.transform.position = Box2Pos;
         //3号盒子
-        Box3Pos.y = (float)(GateVec.y - 0.6);//下移
-        Box3Pos.x = (float)(GateVec.x + 0.8);//右移
+        Box3Pos.y = (float)(GateVec.y - 0.95f);//下移
+        Box3Pos.x = (float)(GateVec.x + 0.6);//右移
         GoldBox3.transform.position = Box3Pos;
         //添加标签
         GoldBox1.tag = "GoldBox";
@@ -199,7 +199,7 @@ public class GateObserverEventHandler : MonoBehaviour
         Vector3 GateVec = transform.position;
         //识别到gate3后,生成金币
         GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
-        var CoinPos = GateVec - Vector3.up * 0.6f;
+        var CoinPos = GateVec - Vector3.up * 0.95f;
         Coin.transform.position = CoinPos;
         //设置标签
         Coin.tag = "Coin";
@@ -231,14 +231,14 @@ public class GateObserverEventHandler : MonoBehaviour
         
         //识别物体的名字
         var name = mObserverBehaviour.TargetName;
-        Debug.Log(name);
+        //Debug.Log(name);
         //识别物体当前位置
         //Vector3 GateVec = transform.position;
 
         switch (name)
         {
             case "gate1":
-                Debug.Log("识别到1号门");
+                //Debug.Log("识别到1号门");
                 if (StaticData.GateObserved[0] == 0)//生成开始装饰等
                 {
                     if (TrialMgr.Instance.gate1 != null)
@@ -254,7 +254,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 break;
             case "gate2":
                 
-                Debug.Log("识别到2号门");
+                //Debug.Log("识别到2号门");
                 //识别到gate2后,生成道具盒子
                 if (StaticData.GateObserved[1]==0)
                 {

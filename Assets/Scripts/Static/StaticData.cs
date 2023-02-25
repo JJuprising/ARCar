@@ -44,5 +44,9 @@ public static class StaticData
         }
         return false;
     }
-
+    public static void printScore()
+    {
+        Debug.Log("score£º" + GateObserved[0] + "|" + GateObserved[1] + "|" + GateObserved[2] + "|" + GateObserved[3]);
+    }
+    
 }
