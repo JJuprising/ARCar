@@ -10,6 +10,11 @@ public static class StaticData
     public static bool isObservedFinshed = false;//if all 4 gates were observed
 
     public static int[] GateObserved = {0,0,0,0};//mark 4 gates observed status
+
+    public static bool EndTimeTrial = false;//三圈是否结束
+
+    public static int[] TimeRecord = new int[4];//默认只存储四次游戏记录
+
     /// <summary>
     /// 检查是否在未完成上一圈的情况下重复通过同一个门
     /// </summary>
@@ -48,5 +53,8 @@ public static class StaticData
     {
         Debug.Log("score：" + GateObserved[0] + "|" + GateObserved[1] + "|" + GateObserved[2] + "|" + GateObserved[3]);
     }
+    
+
+
     
 }
