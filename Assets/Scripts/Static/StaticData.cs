@@ -13,7 +13,7 @@ public static class StaticData
 
     public static bool EndTimeTrial = false;//三圈是否结束
 
-    public static int[] TimeRecord = new int[4];//默认只存储四次游戏记录
+    public static string[] TimeRecord = new string[4];//默认只存储四次游戏记录
 
     /// <summary>
     /// 检查是否在未完成上一圈的情况下重复通过同一个门

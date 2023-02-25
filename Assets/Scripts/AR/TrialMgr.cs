@@ -5,11 +5,17 @@ using UnityEngine.UI;
 public class TrialMgr : Singleton<TrialMgr>
 {
     public Text TimeText;//计时UI
+    public Text Cir1Time;//第一圈
+    public Text Cir2Time;//第二圈
+    public Text Cir3Time;//第三圈
     private float CountTime;//计时
     private int hour,min,sec;
     private string msecStr;
     private bool isShowMlSec=false;//初始化为0
-
+    private string []cirTime=new string[3];//记录每一圈时间的字符串
+    private float CountTime2 = 0;//单圈计时器
+    private float hour2, min2, sec2;
+    private string mesecStr2;
     public GameObject gate1 = null;
     public GameObject gate2 = null;
     public GameObject gate3 = null;
@@ -19,7 +25,7 @@ public class TrialMgr : Singleton<TrialMgr>
     // Start is called before the first frame update
     void Start()
     {
-        
+
         
     }
 
@@ -44,7 +50,7 @@ public class TrialMgr : Singleton<TrialMgr>
         }
         if (isShowMlSec&& StaticData.EndTimeTrial==false)//触发计时且圈还没跑完
         {
-            // 计时时间
+            // 计时总时间
             CountTime += Time.deltaTime;
             hour = (int)CountTime / 3600;
             min = (int)(CountTime - hour * 3600) / 60;
@@ -52,13 +58,40 @@ public class TrialMgr : Singleton<TrialMgr>
             msecStr = isShowMlSec ? ("." + ((int)((CountTime - (int)CountTime) * 10)).ToString("D1")) : "";
             TimeText.text =  min.ToString("D2") + ":" + sec.ToString("D2") + msecStr;
         }
-        if(StaticData.GateObserved[3] == 4)
+        //记录每圈用时
+        switch (StaticData.GateObserved[3])
         {
-            //第三圈经过第四个门，激活第一个门下的Finish物体
-            GameObject FinishObject;
-            FinishObject = GameObject.Find("Gate1_ImageTarget").transform.GetChild(0).gameObject;
-            FinishObject.SetActive(true);
+            case 2:
+                //第一圈完成，记录时间
+                cirTime[0] = TimeText.text;
+                //记录第二圈用时
+                
+                CountTime2 += Time.deltaTime;
+
+                break;
+            case 3:
+                //第二圈完成，记录时间
+                hour2 = (int)CountTime2 / 3600;
+                min2 = (int)(CountTime2 - hour2 * 3600) / 60;
+                sec2 = (int)(CountTime2 - hour2 * 3600 - min * 60);
+                msecStr = "." + ((int)((CountTime2 - (int)CountTime2) * 10)).ToString("D1");
+                cirTime[1]= min2.ToString("D2") + ":" + sec2.ToString("D2") + msecStr;//第二圈用时
+                CountTime2 = 0;//清0重新计时
+                CountTime2 += Time.deltaTime;
+                break;
+            case 4:
+                hour2 = (int)CountTime2 / 3600;
+                min2 = (int)(CountTime2 - hour2 * 3600) / 60;
+                sec2 = (int)(CountTime2 - hour2 * 3600 - min * 60);
+                msecStr = "." + ((int)((CountTime2 - (int)CountTime2) * 10)).ToString("D1");
+                cirTime[1] = min2.ToString("D2") + ":" + sec2.ToString("D2") + msecStr;//第三圈用时
+                // 第三圈经过第四个门，激活第一个门下的Finish物体
+                GameObject FinishObject;
+                FinishObject = GameObject.Find("Gate1_ImageTarget").transform.GetChild(0).gameObject;
+                FinishObject.SetActive(true);
+                break;
         }
+       
         if (StaticData.EndTimeTrial)
         {
             //GetThing.cs检测到Finish被撞击，说明已经经过终点，进入结算界面
@@ -80,25 +113,29 @@ public class TrialMgr : Singleton<TrialMgr>
         //比赛结束函数
         
         //将用时数据进行存储，如果记录的数组不为空，则比较是否打破记录
-        float MinTime = StaticData.TimeRecord[0];
+        string MinTime = StaticData.TimeRecord[0];
         for(int i = 0; i < StaticData.TimeRecord.Length; i++)
         {
-            if (StaticData.TimeRecord[i] == 0)
+            if (StaticData.TimeRecord[i] == "")
             {
                 //为0时记录,转为秒
-                StaticData.TimeRecord[i] = min * 60 + sec;
-                if (StaticData.TimeRecord[i] < MinTime)
+                StaticData.TimeRecord[i] = TimeText.text;
+                if (StaticData.TimeRecord[i] .CompareTo( MinTime)<0)
                 {
-                    //结束
+                    //打破纪录效果
                      GameObject.Find("newrecord").SetActive(true);
                 }
             }
-            else if(StaticData.TimeRecord[i]<MinTime) {
+            else if(StaticData.TimeRecord[i].CompareTo(MinTime)<0) {
+                //记录最少时间圈数
                 MinTime = StaticData.TimeRecord[i];
             }
         }
         //显示结算界面，显示三圈花费的时间
         GameObject.Find("BillingPanel").SetActive(true);
+        Cir1Time.text = cirTime[0];
+        Cir2Time.text = cirTime[1];
+        Cir3Time.text = cirTime[2];
     }
 
     public void ResetGame()
