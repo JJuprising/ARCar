@@ -17,44 +17,63 @@ public class GetThings : MonoBehaviour
         
     }
    
-    public void OnCollisionEnter(Collision collision)
-    {
-        Vector3 PicupVec = collision.transform.position;//拾取对象的位置
-        //拾取箱子功能
-        if (collision.gameObject.tag == "GoldBox")
-        {
-            collision.gameObject.SetActive(false);
-            //Pick up effect
-            GameObject PickupEffect = Instantiate(Resources.Load("PickupBox", typeof(GameObject))) as GameObject;
-            PickupEffect.transform.position = PicupVec;
-            Destroy(collision.collider.gameObject);//销毁物体
-
-        }
-        //拾取金币
-        else if (collision.gameObject.tag == "Coin")
-        {
-            collision.gameObject.SetActive(false);
-            //Pick up effect
-            GameObject PickupEffect = Instantiate(Resources.Load("PickupCoin", typeof(GameObject))) as GameObject;
-            PickupEffect.transform.position = PicupVec;
-            StaticData.CoinNum++;//全局的金币数加一
-            Tx_CoinNum.text = StaticData.CoinNum.ToString();//UI金币数文本变化
-            Destroy(collision.collider.gameObject);//销毁物体
-        }
-        
-    }
     private void OnTriggerEnter(Collider other)
     {
-        
-        
-        if (other.gameObject.name == "StartPlace")
-        {
-            print("进入");
-            //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
-            StartCoroutine(delaythreeSec());
-            //出发倒计时三秒然后开始的特效
+        Vector3 PicupVec = other.transform.position;//拾取对象的位置
+        GameObject PickupEffect;//拾取效果
 
-            Destroy(other.gameObject, 3f);//销毁物体
+        switch (other.gameObject.name){
+            case "StartPlace":
+                print("开始");
+                //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
+                StartCoroutine(delaythreeSec());
+                //出发倒计时三秒然后开始的特效
+                Destroy(other.gameObject, 3f);//销毁物体
+                break;
+
+            case "Gate1_ImageTarget":
+                if (StaticData.CheckGatePassingValidity(0))
+                {
+                    StaticData.GateObserved[0]++;
+                }
+                
+                break;
+            case "Gate2_ImageTarget":
+                if (StaticData.CheckGatePassingValidity(1))
+                {
+                    StaticData.GateObserved[1]++;
+                }
+                break;
+            case "Gate3_ImageTarget":
+                if (StaticData.CheckGatePassingValidity(2))
+                {
+                    StaticData.GateObserved[2]++;
+                }
+                break;
+            case "Gate4_ImageTarget":
+                if (StaticData.CheckGatePassingValidity(3))
+                {
+                    StaticData.GateObserved[3]++;
+                }
+                break;
+        }
+        switch (other.gameObject.tag) {
+            case "GoldBox":
+                other.gameObject.SetActive(false);
+                //Pick up effect
+                PickupEffect = Instantiate(Resources.Load("PickupBox", typeof(GameObject))) as GameObject;
+                PickupEffect.transform.position = PicupVec;
+                Destroy(other.gameObject);//销毁物体
+                break;
+            case "Coin":
+                other.gameObject.SetActive(false);
+                //Pick up effect
+                PickupEffect = Instantiate(Resources.Load("PickupCoin", typeof(GameObject))) as GameObject;
+                PickupEffect.transform.position = PicupVec;
+                StaticData.CoinNum++;//全局的金币数加一
+                Tx_CoinNum.text = StaticData.CoinNum.ToString();//UI金币数文本变化
+                Destroy(other.gameObject);//销毁物体
+                break;
 
         }
         
@@ -69,7 +88,6 @@ public class GetThings : MonoBehaviour
         GameObject Number3Object = null, Number2Object = null, Number1Object = null, GoObject = null;
         while (time < 3)
         {
-            print(time);
             time += Time.deltaTime;
             
             //生成计时图标

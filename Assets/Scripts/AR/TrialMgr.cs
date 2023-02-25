@@ -74,12 +74,6 @@ public class TrialMgr : Singleton<TrialMgr>
   
     public void startCountTime()
     {
-        
-        
-        //if (StaticData.isObservedFinshed)
-        //{
             isShowMlSec = true;//¿ªÆô¼ÆÊ±
-            
-        //}
     }
 }

@@ -162,7 +162,50 @@ public class GateObserverEventHandler : MonoBehaviour
 
         return false;
     }
-
+    public void SummonBoxes() 
+    {
+        Vector3 GateVec = transform.position;
+        //存储道具盒子的坐标
+        var Box1Pos = GateVec;
+        var Box2Pos = GateVec;
+        var Box3Pos = GateVec;
+        //生成道具盒子
+        GameObject GoldBox1 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
+        GameObject GoldBox2 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
+        GameObject GoldBox3 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
+        //设置道具盒的位置
+        //1号盒子
+        Box1Pos.y = (float)(GateVec.y - 0.6);//下移
+        Box1Pos.x = (float)(GateVec.x - 0.8);//左移
+        GoldBox1.transform.position = Box1Pos;
+        //2号盒子
+        Box2Pos.y = (float)(GateVec.y - 0.6);//下移
+        GoldBox2.transform.position = Box2Pos;
+        //3号盒子
+        Box3Pos.y = (float)(GateVec.y - 0.6);//下移
+        Box3Pos.x = (float)(GateVec.x + 0.8);//右移
+        GoldBox3.transform.position = Box3Pos;
+        //添加标签
+        GoldBox1.tag = "GoldBox";
+        GoldBox2.tag = "GoldBox";
+        GoldBox3.tag = "GoldBox";
+        //添加旋转脚本
+        GoldBox1.AddComponent<spin>();
+        GoldBox2.AddComponent<spin>();
+        GoldBox3.AddComponent<spin>();
+    }
+    public void SummonCoins()
+    {
+        Vector3 GateVec = transform.position;
+        //识别到gate3后,生成金币
+        GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+        var CoinPos = GateVec - Vector3.up * 0.6f;
+        Coin.transform.position = CoinPos;
+        //设置标签
+        Coin.tag = "Coin";
+        //添加旋转脚本
+        Coin.AddComponent<spin>();
+    }
     protected virtual void OnTrackingFound()
     {
         if (mObserverBehaviour)
@@ -190,7 +233,7 @@ public class GateObserverEventHandler : MonoBehaviour
         var name = mObserverBehaviour.TargetName;
         Debug.Log(name);
         //识别物体当前位置
-        Vector3 GateVec = transform.position;
+        //Vector3 GateVec = transform.position;
 
         switch (name)
         {
@@ -200,7 +243,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 {
                     if (TrialMgr.Instance.gate1 != null)
                     {
-                        TrialMgr.Instance.gate1.transform.position = GateVec;//同步这个门的位置
+                        
                     }
                 }
 
@@ -215,59 +258,25 @@ public class GateObserverEventHandler : MonoBehaviour
                 //识别到gate2后,生成道具盒子
                 if (StaticData.GateObserved[1]==0)
                 {
-                    //存储道具盒子的坐标
-                    var Box1Pos = GateVec;
-                    var Box2Pos = GateVec;
-                    var Box3Pos = GateVec;
-                    //生成道具盒子
-                    GameObject GoldBox1 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
-                    GameObject GoldBox2 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
-                    GameObject GoldBox3 = Instantiate(Resources.Load("GoldBox", typeof(GameObject)), transform) as GameObject;
-                    //设置道具盒的位置
-                    //1号盒子
-                    Box1Pos.y = (float)(GateVec.y - 0.6);//下移
-                    Box1Pos.x = (float)(GateVec.x - 0.8);//左移
-                    GoldBox1.transform.position = Box1Pos;
-                    //2号盒子
-                    Box2Pos.y = (float)(GateVec.y - 0.6);//下移
-                    GoldBox2.transform.position = Box2Pos;
-                    //3号盒子
-                    Box3Pos.y = (float)(GateVec.y - 0.6);//下移
-                    Box3Pos.x = (float)(GateVec.x + 0.8);//右移
-                    GoldBox3.transform.position = Box3Pos;
-                    //添加标签
-                    GoldBox1.tag = "GoldBox";
-                    GoldBox2.tag = "GoldBox";
-                    GoldBox3.tag = "GoldBox";
-                    //添加旋转脚本
-                    GoldBox1.AddComponent<spin>();
-                    GoldBox2.AddComponent<spin>();
-                    GoldBox3.AddComponent<spin>();
+                    SummonBoxes();
                 }
                 //记录识别状态
                 StaticData.GateObserved[1]++;//NO.1 was marked
                 if (TrialMgr.Instance.gate2 != null)
                 {
-                    TrialMgr.Instance.gate2.transform.position = GateVec;//同步这个门的位置
+                    
                 }
                 break;
             case "gate3":
                 if (StaticData.GateObserved[2]==0)
                 {
-                    //识别到gate3后,生成金币
-                    GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
-                    var CoinPos = GateVec - Vector3.up * 0.6f;
-                    Coin.transform.position = CoinPos;
-                    //设置标签
-                    Coin.tag = "Coin";
-                    //添加旋转脚本
-                    Coin.AddComponent<spin>();
+                    SummonCoins();
                 }
                 //记录识别状态
                 StaticData.GateObserved[2]++;//NO.2 was marked
                 if (TrialMgr.Instance.gate3 != null)
                 {
-                    TrialMgr.Instance.gate3.transform.position = GateVec;//同步这个门的位置
+                    
                 }
                 break;
             case "gate4":
@@ -276,7 +285,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 //识别到gate4后
                 if (TrialMgr.Instance.gate4 != null)
                 {
-                    TrialMgr.Instance.gate4.transform.position = GateVec;//同步这个门的位置
+                    
                 }
                 break;
             default:
