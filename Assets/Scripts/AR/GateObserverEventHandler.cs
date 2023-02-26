@@ -248,8 +248,8 @@ public class GateObserverEventHandler : MonoBehaviour
                 }
 
                 StaticData.GateObserved[0] ++;//NO.0 was marked
-                
-                
+                StaticData.printScore();
+
                 //生成开始动画(倒计时)，todo
                 break;
             case "gate2":
@@ -262,6 +262,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 }
                 //记录识别状态
                 StaticData.GateObserved[1]++;//NO.1 was marked
+
                 if (TrialMgr.Instance.gate2 != null)
                 {
                     
