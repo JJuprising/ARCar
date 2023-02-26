@@ -33,8 +33,7 @@ public class GetThings : MonoBehaviour
                 //print("开始");
                 //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
                 StartCoroutine(DelaythreeSec());
-                //生成一号门下检测点
-                GameObject.Find("Gate1_ImageTarget").transform.Find("CheckCube").gameObject.SetActive(true);
+                
                 Destroy(other.gameObject, 3f);//销毁物体
                 break;
 

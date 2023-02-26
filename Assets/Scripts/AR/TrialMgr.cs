@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class TrialMgr : Singleton<TrialMgr>
 {
@@ -202,5 +203,24 @@ public class TrialMgr : Singleton<TrialMgr>
         hour = min = sec = 0;
         msecStr = "";
         CountCir = 0;
+
+        //重置面板
+        GameObject Camera = GameObject.Find("ARCamera");
+        GameObject Canvas = GameObject.Find("Canvas");
+        //显示其余面板
+        Canvas.transform.Find("CoinPanel").gameObject.SetActive(true);//金币栏
+        Canvas.transform.Find("CirPanel").gameObject.SetActive(true);//圈数栏
+        Canvas.transform.Find("ToolsPanel").gameObject.SetActive(true);//道具栏
+        Canvas.transform.Find("CountTime").gameObject.SetActive(true);//计时栏
+        Canvas.transform.Find("BillingPanel").gameObject.SetActive(true);//结算栏
+    }
+    //按钮事件
+    public void Btn_GoToLanuch()
+    {
+        SceneManager.LoadScene("UI");
+    }
+    public void Btn_Reset()
+    {
+        ResetGame();
     }
 }
