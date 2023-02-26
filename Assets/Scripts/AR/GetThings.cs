@@ -7,18 +7,22 @@ public class GetThings : MonoBehaviour
     public Text Tx_CoinNum;//金币数量
     public Text CirText;//记录圈数
     private int CountCir=0;//记录当前圈数
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] private Transform ScrollImageParent;
+
+    [SerializeField]private RewardItem[] rewards;
+
+    Reward currentItem;
+
+    private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UseItem();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-   
+
     private void OnTriggerEnter(Collider other)
     {
         Vector3 PicupVec = other.transform.position;//拾取对象的位置
@@ -74,6 +78,7 @@ public class GetThings : MonoBehaviour
                 break;
             case "GoldBox":
                 other.gameObject.SetActive(false);
+                GetGoldenBoxReward();
                 //Pick up effect
                 PickupEffect = Instantiate(Resources.Load("PickupBox", typeof(GameObject))) as GameObject;
                 PickupEffect.transform.position = PicupVec;
@@ -159,5 +164,102 @@ public class GetThings : MonoBehaviour
         Destroy(GoObject, 0.3f);
         TrialMgr.Instance.StartCountTime();//三秒后开始计时
     }
-   
+
+    Coroutine rolling;//roll道具动画协程
+    /// <summary>
+    /// 重置抽取动画与物品
+    /// </summary>
+    private void StopPreviousRolling()
+    {
+        currentItem = Reward.None;
+        if (rolling != null)
+        {
+            StopCoroutine(rolling);
+            for (int i = 0; i < ScrollImageParent.childCount; i++)
+            {
+                Destroy(ScrollImageParent.GetChild(i).gameObject);
+            }
+        }
+    }
+    /// <summary>
+    /// 获取随机道具
+    /// </summary>
+    private void GetGoldenBoxReward()
+    {
+        RewardItem reward = rewards[Random.Range(0, rewards.Length)];
+        rolling = StartCoroutine(RollingAward(reward));
+    }
+    /// <summary>
+    /// roll道具动画
+    /// </summary>
+    /// <param name="reward">roll到的道具</param>
+    IEnumerator RollingAward(RewardItem reward)
+    {
+        StopPreviousRolling();//先停止之前的rolling
+        currentItem = reward.reward;//设置道具
+        for (int j = 0; j < 2; j++)//循环播放随机动画
+        {
+            for (int i = 0; i < rewards.Length; i++)
+            {
+                GameObject go = Instantiate(Resources.Load<GameObject>("ScrollingItem"),ScrollImageParent);
+                go.GetComponent<RawImage>().texture = rewards[i].texture;//设置贴图
+                yield return new WaitForSeconds(0.25f);
+                Destroy(go, 1f);
+            }
+        }
+        GameObject end = Instantiate(Resources.Load<GameObject>("ScrollingItem"), ScrollImageParent);
+        end.GetComponent<RawImage>().texture = reward.texture;
+        end.GetComponent<ScrollingRawImage>().isFinalReward = true;//最后一轮动画特殊对待
+        //Destroy(end, 5f);
+        
+    }
+    /// <summary>
+    /// 使用道具
+    /// </summary>
+    private void UseItem()
+    {
+        print("Using" + currentItem);
+        switch (currentItem)
+        {
+            case Reward.bullet:
+                UseBullet();
+                break;
+            case Reward.boost:
+                UseBoost();
+                break;
+            case Reward.banana:
+                UseBanana();
+                break;
+            default:
+                break;
+        }
+        StopPreviousRolling();
+        
+    }
+    private void UseBullet()
+    {
+        //生成炮弹
+        GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject))) as GameObject;
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        Transform bulletRot = Camera.main.transform.GetChild(0);
+        Vector3 bulletPos = Camera.main.transform.position;
+        bullet.transform.localEulerAngles = new Vector3(bulletRot.rotation.x - 20, bulletRot.rotation.y, bulletRot.rotation.z); ;
+        bulletPos.y -= (float)(0.7);
+        bullet.transform.position = bulletPos;
+        bullet.transform.eulerAngles = Camera.main.transform.forward;
+        //加力，推动炮弹
+        rb.AddForce(Camera.main.transform.forward * 800f);
+        //三秒后销毁炮弹
+        Destroy(bullet, 5);
+        //音效
+        GetComponent<AudioSource>().Play();
+    }
+    private void UseBoost()
+    {
+
+    }
+    private void UseBanana()
+    {
+
+    }
 }
