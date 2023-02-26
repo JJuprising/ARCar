@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class GetThings : MonoBehaviour
 {
     public Text Tx_CoinNum;//金币数量
+    public Text CirText;//记录圈数
+    private int CountCir=0;//记录当前圈数
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +29,8 @@ public class GetThings : MonoBehaviour
                 //print("开始");
                 //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
                 StartCoroutine(DelaythreeSec());
-                //出发倒计时三秒然后开始的特效
+                //生成一号门下检测点
+                GameObject.Find("Gate1_ImageTarget").transform.Find("CheckCube").gameObject.SetActive(true);
                 Destroy(other.gameObject, 3f);//销毁物体
                 break;
 
@@ -62,6 +65,13 @@ public class GetThings : MonoBehaviour
                 break;
         }
         switch (other.gameObject.tag) {
+            case "Check":
+                //记录圈数
+                CountCir++;//碰到门前的检测体，圈数加一
+                print("CountCir" + CountCir);
+                CirText.text = CountCir.ToString();
+
+                break;
             case "GoldBox":
                 other.gameObject.SetActive(false);
                 //Pick up effect

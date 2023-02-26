@@ -5,10 +5,12 @@ using UnityEngine.UI;
 public class TrialMgr : Singleton<TrialMgr>
 {
     public Text TimeText;//计时UI
-    public Text Cir1Time;//第一圈
-    public Text Cir2Time;//第二圈
-    public Text Cir3Time;//第三圈
+    public Text Cir1Time;//第一圈的时间
+    public Text Cir2Time;//第二圈的时间
+    public Text Cir3Time;//第三圈的时间
     public Text totalTime;//总时间
+    public Text CirText;//圈数文本
+    private int CountCir;//圈数
     private float CountTime;//计时
     private int hour,min,sec;
     private string msecStr;
@@ -34,6 +36,9 @@ public class TrialMgr : Singleton<TrialMgr>
     // Update is called once per frame
     void Update()
     {
+        //给圈数赋值
+        CountCir = int.Parse(CirText.text);
+
         if (StaticData.GateObserved[3] == 1)
         {
             //第四个门已经识别，判断是否四个门都是别好的
@@ -64,9 +69,9 @@ public class TrialMgr : Singleton<TrialMgr>
         if(StaticData.EndTimeTrial == false)
         {
             //记录每圈用时
-            switch (StaticData.GateObserved[0])
+            switch (CountCir)
             {
-                case 3:
+                case 2:
                     //第一圈完成，记录时间
                     if (setZero == false)
                     {
@@ -78,7 +83,7 @@ public class TrialMgr : Singleton<TrialMgr>
                     CountTime2 += Time.deltaTime;
                     print("第一圈完成，记录时间:"+ cirTime[0]);
                     break;
-                case 4:
+                case 3:
                     //第二圈完成，记录时间
                     hour2 = (int)CountTime2 / 3600;
                     min2 = (int)(CountTime2 - hour2 * 3600) / 60;
@@ -94,7 +99,7 @@ public class TrialMgr : Singleton<TrialMgr>
                     CountTime2 += Time.deltaTime;
                     print("第二圈完成，记录时间:"+ cirTime[1]);
                     break;
-                case 5:
+                case 4:
                     hour2 = (int)CountTime2 / 3600;
                     min2 = (int)(CountTime2 - hour2 * 3600) / 60;
                     sec2 = (int)(CountTime2 - hour2 * 3600 - min * 60);
@@ -196,5 +201,6 @@ public class TrialMgr : Singleton<TrialMgr>
         TimeText.text = "";
         hour = min = sec = 0;
         msecStr = "";
+        CountCir = 0;
     }
 }
