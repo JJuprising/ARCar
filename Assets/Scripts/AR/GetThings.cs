@@ -26,7 +26,7 @@ public class GetThings : MonoBehaviour
             case "StartPlace":
                 //print("开始");
                 //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
-                StartCoroutine(delaythreeSec());
+                StartCoroutine(DelaythreeSec());
                 //出发倒计时三秒然后开始的特效
                 Destroy(other.gameObject, 3f);//销毁物体
                 break;
@@ -92,7 +92,7 @@ public class GetThings : MonoBehaviour
         
     }
     //显示倒计时三秒动画
-    private IEnumerator delaythreeSec()
+    private IEnumerator DelaythreeSec()
     {
         Vector3 NumberVec = this.transform.position;
         NumberVec.z += 2.5f;//图标相对摄像机位置
@@ -147,7 +147,7 @@ public class GetThings : MonoBehaviour
         GoObject.transform.parent = this.transform;
         Destroy(Number1Object);
         Destroy(GoObject, 0.3f);
-        TrialMgr.Instance.startCountTime();//三秒后开始计时
+        TrialMgr.Instance.StartCountTime();//三秒后开始计时
     }
    
 }

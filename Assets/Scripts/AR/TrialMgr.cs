@@ -8,6 +8,7 @@ public class TrialMgr : Singleton<TrialMgr>
     public Text Cir1Time;//第一圈
     public Text Cir2Time;//第二圈
     public Text Cir3Time;//第三圈
+    public Text totalTime;//总时间
     private float CountTime;//计时
     private int hour,min,sec;
     private string msecStr;
@@ -26,8 +27,8 @@ public class TrialMgr : Singleton<TrialMgr>
     // Start is called before the first frame update
     void Start()
     {
-
         
+
     }
 
     // Update is called once per frame
@@ -49,6 +50,7 @@ public class TrialMgr : Singleton<TrialMgr>
             }
 
         }
+        
         if (isShowMlSec&& StaticData.EndTimeTrial==false)//触发计时且圈还没跑完
         {
             // 计时总时间
@@ -99,10 +101,14 @@ public class TrialMgr : Singleton<TrialMgr>
                     msecStr = "." + ((int)((CountTime2 - (int)CountTime2) * 10)).ToString("D1");
                     cirTime[2] = min2.ToString("D2") + ":" + sec2.ToString("D2") + msecStr;//第二圈用时
 
-                                                                                           // 第三圈经过第四个门，激活第一个门下的Finish物体
-                    GameObject FinishObject;
-                    FinishObject = GameObject.Find("finish");
+                    // 第三圈经过第四个门，激活第一个门下的Finish物体
+                    GameObject Camera;
+                    Camera = GameObject.Find("ARCamera");
+                    //隐藏的不能用gameobject.find,需要挂在可见下面，用tranform.find
+                    GameObject FinishObject = Camera.transform.Find("finish").gameObject;
                     FinishObject.SetActive(true);
+                    Destroy(FinishObject, 1);
+                    totalTime.text = TimeText.text;//记录总时间
                     StaticData.EndTimeTrial = true;//游戏结束标记
                     print("第三圈完成，记录时间:"+ cirTime[2]);
                     break;
@@ -114,12 +120,12 @@ public class TrialMgr : Singleton<TrialMgr>
         if (StaticData.EndTimeTrial)
         {
             //GetThing.cs检测到Finish被撞击，说明已经经过终点，进入结算界面
-            endTrial();
+            EndTrial();
         }
     }
    
   
-    public void startCountTime()
+    public void StartCountTime()
     {
 
         //if (StaticData.isObservedFinshed)
@@ -127,39 +133,54 @@ public class TrialMgr : Singleton<TrialMgr>
             isShowMlSec = true;//开启计时
         //}
     }
-    public void endTrial()
+    public void EndTrial()
     {
         //比赛结束函数
-        
-        
+        //打破纪录效果
+        GameObject Camera;
+
         //将用时数据进行存储，如果记录的数组不为空，则比较是否打破记录
         string MinTime = StaticData.TimeRecord[0];
         for(int i = 0; i < StaticData.TimeRecord.Length; i++)
         {
-            if (StaticData.TimeRecord[i] == "")
+            
+            if (StaticData.TimeRecord[i] == null)
             {
                 //为0时记录,转为秒
-                StaticData.TimeRecord[i] = TimeText.text;
+                StaticData.TimeRecord[i] = totalTime.text;
+                
                 if (StaticData.TimeRecord[i] .CompareTo(MinTime)<0)
                 {
-                    //打破纪录效果
-                     GameObject.Find("newrecord").SetActive(true);
+                    
+                    Camera = GameObject.Find("ARCamera");
+                    //隐藏的不能用gameobject.find,需要挂在可见下面，用tranform.find
+                    GameObject newrecord=Camera.transform.Find("newrecord").gameObject;
+                    newrecord.SetActive(true);
+                    Destroy(newrecord, 2);
                 }
-            }
-            else if(StaticData.TimeRecord[i].CompareTo(MinTime)<0) {
+                break;
+            }else if(StaticData.TimeRecord[i].CompareTo(MinTime)<0&&i!=0) {
                 //记录最少时间圈数
                 MinTime = StaticData.TimeRecord[i];
             }
         }
         //显示结算界面，显示三圈花费的时间
-        GameObject.Find("BillingPanel").SetActive(true);
+        GameObject Canvas;
+        Canvas = GameObject.Find("Canvas");
+        //隐藏的不能用gameobject.find,需要挂在可见下面，用tranform.find
+        Canvas.transform.Find("BillingPanel").gameObject.SetActive(true);
+        for(int i = 0; i < cirTime.Length; i++)
+        {
+            Debug.Log("第" + i + "圈:" + cirTime[i]);
+        }
         Cir1Time.text = cirTime[0];
         Cir2Time.text = cirTime[1];
         Cir3Time.text = cirTime[2];
         //隐藏其余面板
-        GameObject.Find("CoinPanel").SetActive(false);
-        GameObject.Find("CirPanel").SetActive(false);
-        GameObject.Find("ToolsPanel").SetActive(false);
+        Canvas.transform.Find("CoinPanel").gameObject.SetActive(false);
+        Canvas.transform.Find("CirPanel").gameObject.SetActive(false);
+        Canvas.transform.Find("ToolsPanel").gameObject.SetActive(false);
+        Canvas.transform.Find("CountTime").gameObject.SetActive(false);
     }
 
     public void ResetGame()
