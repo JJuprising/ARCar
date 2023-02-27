@@ -198,13 +198,39 @@ public class GateObserverEventHandler : MonoBehaviour
     {
         Vector3 GateVec = transform.position;
         //识别到gate3后,生成金币
-        GameObject Coin = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
-        var CoinPos = GateVec - Vector3.up * 0.95f;
-        Coin.transform.position = CoinPos;
+        GameObject Coin1 = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+        GameObject Coin2 = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+        GameObject Coin3 = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+        GameObject Coin4 = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+        GameObject Coin5 = Instantiate(Resources.Load("Coin", typeof(GameObject)), transform) as GameObject;
+        var Coin1Pos = GateVec - Vector3.up * 0.95f;
+        var Coin2Pos = GateVec - Vector3.up * 0.95f;
+        var Coin3Pos = GateVec - Vector3.up * 0.95f;
+        var Coin4Pos = GateVec - Vector3.up * 0.95f;
+        var Coin5Pos = GateVec - Vector3.up * 0.95f;
+        Coin2Pos.x += 0.061f;
+        Coin2Pos.y += 0.474f;
+        Coin3Pos.x -= 0.558f;
+        Coin3Pos.y += 1.114f;
+        Coin4Pos.x += 0.412f;
+        Coin4Pos.y += 1.432f;
+        Coin5Pos.x += 0.151f;
+        Coin5Pos.y += 2.435f;
+        //调整位置
+        Coin1.transform.position = Coin1Pos;
+        Coin2.transform.position = Coin2Pos;
+        Coin3.transform.position = Coin3Pos;
+        Coin4.transform.position = Coin4Pos;
+        Coin5.transform.position = Coin5Pos;
+        
         //设置标签
-        Coin.tag = "Coin";
+        Coin1.tag = Coin2.tag= Coin3.tag = Coin4.tag = Coin5.tag = "Coin";
         //添加旋转脚本
-        Coin.AddComponent<spin>();
+        Coin1.AddComponent<spin>();
+        Coin2.AddComponent<spin>();
+        Coin3.AddComponent<spin>();
+        Coin4.AddComponent<spin>();
+        Coin5.AddComponent<spin>();
     }
     protected virtual void OnTrackingFound()
     {
