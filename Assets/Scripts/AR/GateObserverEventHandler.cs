@@ -209,13 +209,13 @@ public class GateObserverEventHandler : MonoBehaviour
         var Coin4Pos = GateVec - Vector3.up * 0.95f;
         var Coin5Pos = GateVec - Vector3.up * 0.95f;
         Coin2Pos.x += 0.061f;
-        Coin2Pos.y += 0.474f;
+        Coin2Pos.z -= 0.474f;
         Coin3Pos.x -= 0.558f;
-        Coin3Pos.y += 1.114f;
+        Coin3Pos.z -= 1.114f;
         Coin4Pos.x += 0.412f;
-        Coin4Pos.y += 1.432f;
+        Coin4Pos.z -= 1.432f;
         Coin5Pos.x += 0.151f;
-        Coin5Pos.y += 2.435f;
+        Coin5Pos.z -= 2.435f;
         //µ÷ÕûÎ»ÖÃ
         Coin1.transform.position = Coin1Pos;
         Coin2.transform.position = Coin2Pos;
