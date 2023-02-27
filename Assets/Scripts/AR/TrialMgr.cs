@@ -212,7 +212,7 @@ public class TrialMgr : Singleton<TrialMgr>
         Canvas.transform.Find("CirPanel").gameObject.SetActive(true);//圈数栏
         Canvas.transform.Find("ToolsPanel").gameObject.SetActive(true);//道具栏
         Canvas.transform.Find("CountTime").gameObject.SetActive(true);//计时栏
-        Canvas.transform.Find("BillingPanel").gameObject.SetActive(true);//结算栏
+        Canvas.transform.Find("BillingPanel").gameObject.SetActive(false);//隐藏结算栏
     }
     //按钮事件
     public void Btn_GoToLanuch()
