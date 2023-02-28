@@ -13,3 +13,9 @@ public enum Reward
     bullet,
     boost,
 }
+public enum CarColor
+{
+    RED,
+    GREEN,
+    BLUE,
+}
