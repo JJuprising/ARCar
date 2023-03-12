@@ -8,20 +8,24 @@ public class GameCustomize : MonoBehaviour
     
 
     [SerializeField]GameObject[] availableCarColor;//可选的颜色的对象
+    [SerializeField] GameObject[] availableTool;//可选的颜色的对象
     [SerializeField]CarColor[] TargetCarColors;//可选的颜色，与上方对应
     [SerializeField]int[] targetCoin;
     int[] ImageUV;//图像的坐标
 
     int colorCount;
+    int toolCount;
     int selectingColorIndex = 0;//选中颜色的下标
 
-    [SerializeField] Button chooseButton;
-    [SerializeField] Text coinText;
-    [SerializeField] Text selectText;
+    [SerializeField] Button chooseButton;//选择车辆的按钮
+    [SerializeField] Text coinText;//金币数量文本
+    [SerializeField] Text selectText;//已选择车辆的文本
+
 
     private void Start()
     {
         colorCount = availableCarColor.Length;
+        toolCount = availableTool.Length;   
         CarColor currentCarColor = StaticData.carColor;//读取
         selectText.text = "Present:" + currentCarColor;
         ImageUV = new int[colorCount];
@@ -122,5 +126,27 @@ public class GameCustomize : MonoBehaviour
             img.uvRect = new Rect(currentX, 0, img.uvRect.width, img.uvRect.height);
         }
     }
+    public void UpdateTool(int index)
+    {
+        if (!IsToolInMaxLevel(index)) StaticData.ToolLevel[index]++;
+        UpdatePanel();
 
+    }
+
+    bool IsToolInMaxLevel(int index)
+    {
+        if (StaticData.ToolLevel[index] < 5) return false;
+        return true;   
+    }
+    void UpdatePanel()
+    {
+        for(int i = 0;i < toolCount; i++)
+        {
+            availableTool[i].transform.GetComponentInChildren<Text>(true).text = $"Level {StaticData.ToolLevel[i]}";
+            if(IsToolInMaxLevel(i))
+            {
+                availableTool[i].transform.GetComponentInChildren<Button>(true).gameObject.SetActive(false);
+            }
+        }
+    }
 }
