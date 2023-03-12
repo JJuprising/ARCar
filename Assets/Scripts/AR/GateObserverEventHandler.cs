@@ -10,7 +10,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using Vuforia;
-
+using UnityEngine.XR.ARFoundation;
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
 ///
@@ -193,6 +193,9 @@ public class GateObserverEventHandler : MonoBehaviour
         GoldBox1.AddComponent<spin>();
         GoldBox2.AddComponent<spin>();
         GoldBox3.AddComponent<spin>();
+        GoldBox1.AddComponent<ARAnchor>();
+        GoldBox2.AddComponent<ARAnchor>();
+        GoldBox3.AddComponent<ARAnchor>();
     }
     public void SummonCoins()
     {
@@ -231,6 +234,15 @@ public class GateObserverEventHandler : MonoBehaviour
         Coin3.AddComponent<spin>();
         Coin4.AddComponent<spin>();
         Coin5.AddComponent<spin>();
+        Coin1.AddComponent<ARAnchor>();
+        Coin2.AddComponent<ARAnchor>();
+        Coin3.AddComponent<ARAnchor>();
+        Coin4.AddComponent<ARAnchor>();
+        Coin5.AddComponent<ARAnchor>();
+    }
+    public void SummonStartPlace()
+    {
+
     }
     protected virtual void OnTrackingFound()
     {
@@ -267,6 +279,12 @@ public class GateObserverEventHandler : MonoBehaviour
                 //Debug.Log("识别到1号门");
                 if (StaticData.GateObserved[0] == 0)//生成开始装饰等
                 {
+                    GameObject StartPlace = Instantiate(Resources.Load("StartPlace", typeof(GameObject)), transform) as GameObject;
+                    Vector3 GateVec = transform.position;
+                    var SPPos = GateVec - Vector3.up * 0.95f;
+                    SPPos.z -= 1.5f;
+                    StartPlace.transform.position = SPPos;
+                    StartPlace.AddComponent<ARAnchor>();
                     if (TrialMgr.Instance.gate1 != null)
                     {
                         
@@ -279,7 +297,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 //生成开始动画(倒计时)，todo
                 break;
             case "gate2":
-                
+            
                 //Debug.Log("识别到2号门");
                 //识别到gate2后,生成道具盒子
                 if (StaticData.GateObserved[1]==0)
@@ -295,10 +313,13 @@ public class GateObserverEventHandler : MonoBehaviour
                 }
                 break;
             case "gate3":
+                GameObject g3 = GameObject.Find("Gate1_ImageTarget");
+                Vector3 worldPosition3 = g3.transform.position;
                 if (StaticData.GateObserved[2]==0)
                 {
                     SummonCoins();
                 }
+                
                 //记录识别状态
                 StaticData.GateObserved[2]++;//NO.2 was marked
                 if (TrialMgr.Instance.gate3 != null)
@@ -310,6 +331,10 @@ public class GateObserverEventHandler : MonoBehaviour
                 //记录识别状态
                 StaticData.GateObserved[3]++;//NO.3 was marked
                 //识别到gate4后
+                GameObject g4 = GameObject.Find("Gate1_ImageTarget");
+                Vector3 worldPosition2 = g4.transform.position;
+                string worldPositionStr2 = "1号门位置 " + worldPosition2.x + ", " + worldPosition2.y + ", " + worldPosition2.z;
+                Debug.Log(worldPositionStr2);
                 if (TrialMgr.Instance.gate4 != null)
                 {
                     
@@ -390,6 +415,7 @@ public class GateObserverEventHandler : MonoBehaviour
 
             mPreviousPose = currentPose;
             mPreviousStatus = currentStatus;
+            
         }
 
         void UpdatePoseSmoothing(Pose currentPose, TargetStatus currentTargetStatus)

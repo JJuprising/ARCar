@@ -38,7 +38,7 @@ public class Wire : MonoBehaviour
         collidersParent = GameObject.Find("Colliders").transform;
 
         startPos = GameObject.Find("Gate1_ImageTarget").transform;
-        endPos = GameObject.Find("Gate2_ImageTarget").transform;
+        endPos = GameObject.Find("Gate4_ImageTarget").transform;
     }
 
     private void Update()

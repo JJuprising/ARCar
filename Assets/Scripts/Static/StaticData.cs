@@ -15,6 +15,7 @@ public static class StaticData
 
     public static string[] TimeRecord = new string[4];//默认只存储四次游戏记录
 
+    public static bool UseItemSign = false;//按钮触发，按下变为true触发getthing的useitem事件
     /// <summary>
     /// 检查是否在未完成上一圈的情况下重复通过同一个门
     /// </summary>

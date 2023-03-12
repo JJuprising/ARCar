@@ -223,4 +223,9 @@ public class TrialMgr : Singleton<TrialMgr>
     {
         ResetGame();
     }
+    public void Btn_UseItem()
+    {
+        //按钮触发道具，传递参数
+        StaticData.UseItemSign = true;
+    }
 }

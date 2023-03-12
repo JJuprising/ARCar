@@ -13,7 +13,7 @@ public class CamMove : MonoBehaviour
     private void Update()
     {
         currentAcc = Vector3.zero;
-        currentAcc.x = Input.acceleration.z;
+        currentAcc.x = Input.acceleration.y;
         currentAcc.y = Input.acceleration.x;
         currentAcc.z = Input.acceleration.z;
         currentAcc/=rb.mass;
