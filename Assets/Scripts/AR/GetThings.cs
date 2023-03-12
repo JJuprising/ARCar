@@ -7,7 +7,7 @@ public class GetThings : MonoBehaviour
     public Text Tx_CoinNum;//金币数量
     public Text CirText;//记录圈数
     private int CountCir=0;//记录当前圈数
-
+    
     [SerializeField] private Transform ScrollImageParent;
 
     [SerializeField]private RewardItem[] rewards;
@@ -27,16 +27,20 @@ public class GetThings : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         Vector3 PicupVec = other.transform.position;//拾取对象的位置
         GameObject PickupEffect;//拾取效果
 
         switch (other.gameObject.name){
             case "StartPlace(Clone)":
                 print("开始");
-                //如果碰到的是StartPlace的特效点，开始计时，两秒后游戏开始
-                StartCoroutine(DelaythreeSec());
-                
+                //触发RaceMenu
+                GameObject Canvas = GameObject.Find("Canvas");
+                Canvas.transform.Find("RaceMenuPanel").gameObject.SetActive(true);
                 Destroy(other.gameObject, 3f);//销毁物体
+                
+                
+                
                 break;
 
             case "Gate1_ImageTarget":
@@ -108,78 +112,7 @@ public class GetThings : MonoBehaviour
         }
         
     }
-    //显示倒计时三秒动画
-    private IEnumerator DelaythreeSec()
-    {
-        Vector3 NumberVec = this.transform.position;
-        NumberVec.z += 2.5f;//图标相对摄像机位置
-        bool isMerge = true;//判断是否已经生成了数字
-        float time = 0;//计时
-        GameObject Number3Object = null, Number2Object = null, Number1Object = null, GoObject = null;
-        //隐藏的不能用gameobject.find,需要挂在可见下面，用tranform.find
-        GameObject canvas = GameObject.Find("CountDownPanel");
-        GameObject number1 = canvas.transform.Find("number1").gameObject;
-        GameObject number2 = canvas.transform.Find("number2").gameObject;
-        GameObject number3 = canvas.transform.Find("number3").gameObject;
-        GameObject GO = canvas.transform.Find("GO").gameObject;
-        while (time < 3)
-        {
-            time += Time.deltaTime;
-            
-            //生成计时图标
-            if (time <= 1&&time>=0&&isMerge)
-            {
-                //3
-
-                isMerge = false;
-                //Number3Object = Instantiate(Resources.Load("number3", typeof(GameObject))) as GameObject;
-                //Number3Object.transform.position = NumberVec;
-                //Number3Object.transform.parent = this.transform;
-                
-                number3.SetActive(true);
-            }
-            
-            if (time > 1&&time<=2&&isMerge==false)
-            {
-                //2
-
-                isMerge = true;
-                //Number2Object = Instantiate(Resources.Load("number2", typeof(GameObject))) as GameObject;
-                //NumberVec.z += 0.01f;
-                //Number2Object.transform.position = Number3Object.transform.position;
-                //Number2Object.transform.parent = this.transform;
-                //Destroy(Number3Object);//销毁物体
-                number3.SetActive(false);
-                number2.SetActive(true);
-            }
-            if (time > 2&&time<3&&isMerge==true)
-            {
-                //1
-
-                isMerge =false;
-
-                //Number1Object = Instantiate(Resources.Load("number1", typeof(GameObject))) as GameObject;
-                //NumberVec.z -= 0.01f;
-                //Number1Object.transform.position = Number2Object.transform.position;
-                //Number1Object.transform.parent = this.transform;
-                //Destroy(Number2Object);
-                number3.SetActive(false);
-                number2.SetActive(false);
-                number1.SetActive(true);
-            }
-            yield return null;
-        }
-        Destroy(Number1Object);
-
-        //GoObject = Instantiate(Resources.Load("go_2", typeof(GameObject))) as GameObject;
-        //NumberVec.z += 0.01f;
-        //GoObject.transform.position = Number1Object.transform.position;
-        //GoObject.transform.parent = this.transform;
-        number1.SetActive(false);
-        GO.SetActive(true);
-        Destroy(GO, 0.3f);
-        TrialMgr.Instance.StartCountTime();//三秒后开始计时
-    }
+    
 
     Coroutine rolling;//roll道具动画协程
     /// <summary>
