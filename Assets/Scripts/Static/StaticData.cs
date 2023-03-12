@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class StaticData 
 {
-    public static int CoinNum = 0;//金币数量
+    public static int CoinNum = 100;//金币数量
 
     public static bool isObservedFinshed = false;//if all 4 gates were observed
 
@@ -14,6 +14,10 @@ public static class StaticData
     public static bool EndTimeTrial = false;//三圈是否结束
 
     public static string[] TimeRecord = new string[4];//默认只存储四次游戏记录
+
+    public static CarColor carColor = CarColor.RED;
+
+    public static int[] ToolLevel = {1,1,1};
 
     public static bool UseItemSign = false;//按钮触发，按下变为true触发getthing的useitem事件
     /// <summary>
