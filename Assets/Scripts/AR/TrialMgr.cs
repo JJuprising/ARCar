@@ -37,6 +37,17 @@ public class TrialMgr : Singleton<TrialMgr>
     // Update is called once per frame
     void Update()
     {
+        //检测选择的游戏模式 1是竞速赛 2是计时赛
+
+        if (StaticData.racemode == 1)
+        {
+            //竞速赛
+        }else if (StaticData.racemode == 2)
+        {
+            //计时赛
+            TimeRace();
+            StaticData.racemode *= 4;//映射到4倍的值，避免重复进入计时
+        }
         //给圈数赋值
         CountCir = int.Parse(CirText.text);
 
@@ -130,15 +141,98 @@ public class TrialMgr : Singleton<TrialMgr>
         }
     }
    
-  
+    //计时赛起始函数
+    public void TimeRace()
+    {
+       
+        //倒计时
+        StartCountTime();
+        //计时赛游戏逻辑
+    }
+    //开始计时函数
     public void StartCountTime()
     {
 
-        //if (StaticData.isObservedFinshed)
-        //{
-            isShowMlSec = true;//开启计时
-        //}
+        //如果选择计时赛，开始计时，三秒后游戏开始
+        StartCoroutine(DelaythreeSec());
+        //显示游戏面板
+        GameObject Canvas = GameObject.Find("Canvas");
+        Canvas.transform.Find("ToolsPanel").gameObject.SetActive(true);
+        Canvas.transform.Find("CoinPanel").gameObject.SetActive(true);
+        Canvas.transform.Find("CirPanel").gameObject.SetActive(true);
+        Canvas.transform.Find("CountPanel").gameObject.SetActive(true);
     }
+    //计时函数
+    //显示倒计时三秒动画
+    private IEnumerator DelaythreeSec()
+    {
+        Vector3 NumberVec = this.transform.position;
+        NumberVec.z += 2.5f;//图标相对摄像机位置
+        bool isMerge = true;//判断是否已经生成了数字
+        float time = 0;//计时
+        //隐藏的不能用gameobject.find,需要挂在可见下面，用tranform.find
+        GameObject canvas = GameObject.Find("CountDownPanel");
+        GameObject number1 = canvas.transform.Find("number1").gameObject;
+        GameObject number2 = canvas.transform.Find("number2").gameObject;
+        GameObject number3 = canvas.transform.Find("number3").gameObject;
+        GameObject GO = canvas.transform.Find("GO").gameObject;
+        while (time < 3)
+        {
+            time += Time.deltaTime;
+
+            //生成计时图标
+            if (time <= 1 && time >= 0 && isMerge)
+            {
+                //3
+
+                isMerge = false;
+                //Number3Object = Instantiate(Resources.Load("number3", typeof(GameObject))) as GameObject;
+                //Number3Object.transform.position = NumberVec;
+                //Number3Object.transform.parent = this.transform;
+
+                number3.SetActive(true);
+            }
+
+            if (time > 1 && time <= 2 && isMerge == false)
+            {
+                //2
+
+                isMerge = true;
+                //Number2Object = Instantiate(Resources.Load("number2", typeof(GameObject))) as GameObject;
+                //NumberVec.z += 0.01f;
+                //Number2Object.transform.position = Number3Object.transform.position;
+                //Number2Object.transform.parent = this.transform;
+                //Destroy(Number3Object);//销毁物体
+                number3.SetActive(false);
+                number2.SetActive(true);
+            }
+            if (time > 2 && time < 3 && isMerge == true)
+            {
+                //1
+
+                isMerge = false;
+
+                //Number1Object = Instantiate(Resources.Load("number1", typeof(GameObject))) as GameObject;
+                //NumberVec.z -= 0.01f;
+                //Number1Object.transform.position = Number2Object.transform.position;
+                //Number1Object.transform.parent = this.transform;
+                //Destroy(Number2Object);
+                number3.SetActive(false);
+                number2.SetActive(false);
+                number1.SetActive(true);
+            }
+            yield return null;
+        }
+        //GoObject = Instantiate(Resources.Load("go_2", typeof(GameObject))) as GameObject;
+        //NumberVec.z += 0.01f;
+        //GoObject.transform.position = Number1Object.transform.position;
+        //GoObject.transform.parent = this.transform;
+        number1.SetActive(false);
+        GO.SetActive(true);
+        Destroy(GO, 0.3f);
+        isShowMlSec = true;//置为true开始计时
+    }
+    //比赛结束函数
     public void EndTrial()
     {
         //比赛结束函数
@@ -189,6 +283,7 @@ public class TrialMgr : Singleton<TrialMgr>
         Canvas.transform.Find("CountTime").gameObject.SetActive(false);
     }
 
+    //重置游戏
     public void ResetGame()
     {
         StaticData.CoinNum = 0;
@@ -214,6 +309,8 @@ public class TrialMgr : Singleton<TrialMgr>
         Canvas.transform.Find("CountTime").gameObject.SetActive(true);//计时栏
         Canvas.transform.Find("BillingPanel").gameObject.SetActive(false);//隐藏结算栏
     }
+
+
     //按钮事件
     public void Btn_GoToLanuch()
     {
@@ -227,5 +324,24 @@ public class TrialMgr : Singleton<TrialMgr>
     {
         //按钮触发道具，传递参数
         StaticData.UseItemSign = true;
+    }
+    //race menu选择游戏模式
+    int Temracemode = 0;
+    public void Btn_ChooseRace(int target)
+    {
+        if (target == 1)
+        {
+            Temracemode = 1;//竞速模式
+        }
+        else
+        {
+            Temracemode = 2;//计时模式
+        }
+        
+    }
+    public void Btn_OK()
+    {
+        GameObject.Find("RaceMenuPanel").SetActive(false);
+        StaticData.racemode = Temracemode;
     }
 }
