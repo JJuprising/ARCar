@@ -193,9 +193,9 @@ public class GateObserverEventHandler : MonoBehaviour
         GoldBox1.AddComponent<spin>();
         GoldBox2.AddComponent<spin>();
         GoldBox3.AddComponent<spin>();
-        GoldBox1.AddComponent<ARAnchor>();
-        GoldBox2.AddComponent<ARAnchor>();
-        GoldBox3.AddComponent<ARAnchor>();
+        //GoldBox1.AddComponent<ARAnchor>();
+        //GoldBox2.AddComponent<ARAnchor>();
+        //GoldBox3.AddComponent<ARAnchor>();
     }
     public void SummonCoins()
     {
@@ -284,11 +284,7 @@ public class GateObserverEventHandler : MonoBehaviour
                     var SPPos = GateVec - Vector3.up * 0.95f;
                     SPPos.z -= 1.5f;
                     StartPlace.transform.position = SPPos;
-                    StartPlace.AddComponent<ARAnchor>();
-                    if (TrialMgr.Instance.gate1 != null)
-                    {
-                        
-                    }
+
                 }
 
                 StaticData.GateObserved[0] ++;//NO.0 was marked
@@ -307,10 +303,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 //记录识别状态
                 StaticData.GateObserved[1]++;//NO.1 was marked
 
-                if (TrialMgr.Instance.gate2 != null)
-                {
-                    
-                }
+
                 break;
             case "gate3":
                 GameObject g3 = GameObject.Find("Gate1_ImageTarget");
@@ -322,10 +315,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 
                 //记录识别状态
                 StaticData.GateObserved[2]++;//NO.2 was marked
-                if (TrialMgr.Instance.gate3 != null)
-                {
-                    
-                }
+ 
                 break;
             case "gate4":
                 //记录识别状态
@@ -335,10 +325,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 Vector3 worldPosition2 = g4.transform.position;
                 string worldPositionStr2 = "1号门位置 " + worldPosition2.x + ", " + worldPosition2.y + ", " + worldPosition2.z;
                 Debug.Log(worldPositionStr2);
-                if (TrialMgr.Instance.gate4 != null)
-                {
-                    
-                }
+
                 break;
             default:
                 break;
