@@ -22,6 +22,8 @@ public static class StaticData
     public static bool UseItemSign = false;//按钮触发，按下变为true触发getthing的useitem事件
 
     public static int racemode = 0;
+
+    public static bool isUseTool = false;//眼电触发SocketClient.cs,当为true使用道具
     /// <summary>
     /// 检查是否在未完成上一圈的情况下重复通过同一个门
     /// </summary>
