@@ -7,7 +7,7 @@ public class ShowRoom_Mgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StaticData.LoadDataFromFile();//º”‘ÿ¥Êµµ
     }
 
     // Update is called once per frame
