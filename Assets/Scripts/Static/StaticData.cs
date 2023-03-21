@@ -27,12 +27,14 @@ public static class StaticData
 
     public static int racemode = 0;
 
+
+    public static bool EOGUseTool = false;//眼电触发SocketClient.cs,当为true使用道具
+
     
     public static int[] UpgradeCost = {50, 75, 100, 150 };//升级费用，暂时写在这里
 
     public static int[] targetCoin = { 0, 100, 300 };//车辆解锁费用，暂时写在这里
 
-    public static bool isUseTool = false;//眼电触发SocketClient.cs,当为true使用道具
     /// <summary>
     /// 检查是否在未完成上一圈的情况下重复通过同一个门
     /// </summary>

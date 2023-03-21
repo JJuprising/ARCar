@@ -85,7 +85,7 @@ public class SocketClient : MonoBehaviour
                     if (long.Parse(message) < 100)
                     {
                         //眼电小于100μV，触发使用道具
-                        StaticData.isUseTool = true;
+                        StaticData.EOGUseTool = true;
                     }
                 }
                 else
