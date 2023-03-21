@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameCustomize : MonoBehaviour
+public class GameCustomize : Singleton<GameCustomize>
 {
     
 
     [SerializeField]GameObject[] availableCarColor;//可选的颜色的对象
     [SerializeField] GameObject[] availableTool;//可选的颜色的对象
     [SerializeField]CarColor[] TargetCarColors;//可选的颜色，与上方对应
-    [SerializeField]int[] targetCoin;
+    
     int[] ImageUV;//图像的坐标
 
     int colorCount;
@@ -18,17 +18,24 @@ public class GameCustomize : MonoBehaviour
     int selectingColorIndex = 0;//选中颜色的下标
 
     [SerializeField] Button chooseButton;//选择车辆的按钮
-    [SerializeField] Text coinText;//金币数量文本
+    [SerializeField] Text TotalCoinText;//金币数量文本
+    [SerializeField] Text CurrentCoinText;//金币数量文本
     [SerializeField] Text selectText;//已选择车辆的文本
+
+
 
 
     private void Start()
     {
         colorCount = availableCarColor.Length;
-        toolCount = availableTool.Length;   
+        toolCount = availableTool.Length;
+        ImageUV = new int[colorCount];
+        UpdatePanel();
+    }
+    private void InitCarPanel()
+    {
         CarColor currentCarColor = StaticData.carColor;//读取
         selectText.text = "Present:" + currentCarColor;
-        ImageUV = new int[colorCount];
         for (int i = 0; i < colorCount; i++)
         {
             if (TargetCarColors[i] == currentCarColor)
@@ -37,7 +44,6 @@ public class GameCustomize : MonoBehaviour
                 break;
             }
         }
-        InitCarSelection();
     }
     private void InitCarSelection()
     {
@@ -52,7 +58,7 @@ public class GameCustomize : MonoBehaviour
     /// <summary>
     /// 设置颜色，传参给全局变量
     /// </summary>
-    [SerializeField]
+    
     public void SetCarColor()
     {
         if (IsCarAvailable())
@@ -62,10 +68,10 @@ public class GameCustomize : MonoBehaviour
         }
         
     }
-    [SerializeField]
+    
     public void SwitchCarColor(bool isLeft)
     {
-        //InitCarSelection();
+        InitCarSelection();
         if (isLeft)
         {
             if (selectingColorIndex > 0)
@@ -88,16 +94,16 @@ public class GameCustomize : MonoBehaviour
                 }
             }
         }
-        coinText.text = $"Coin:{StaticData.CoinNum}/{targetCoin[selectingColorIndex]}";
+        TotalCoinText.text = $"TotalCoin:{StaticData.CoinNum}/{StaticData.targetCoin[selectingColorIndex]}";
         if (IsCarAvailable())
         {
             chooseButton.gameObject.SetActive(true);
-            coinText.gameObject.SetActive(false);
+            TotalCoinText.gameObject.SetActive(false);
         }
         else
         {
             chooseButton.gameObject.SetActive(false);
-            coinText.gameObject.SetActive(true);
+            TotalCoinText.gameObject.SetActive(true);
         }
     }
 
@@ -107,7 +113,7 @@ public class GameCustomize : MonoBehaviour
     }
     bool IsCarAvailable()
     {
-        if (StaticData.CoinNum< targetCoin[selectingColorIndex])
+        if (StaticData.totalCoinNum< StaticData.targetCoin[selectingColorIndex])
         {
             return false;
         }
@@ -115,6 +121,17 @@ public class GameCustomize : MonoBehaviour
         {
             return true;
         }
+    }
+    bool IsToolUpGradeable(Reward item)
+    {
+        if(item==Reward.None) return false;
+
+        int level =  StaticData.GetToolLevel(item);
+        if(level>=5) return false;
+
+        if(StaticData.GetToolUpgradeCost(item)>StaticData.CoinNum) return false;
+
+        return true;
     }
     void MoveImage()
     {
@@ -128,25 +145,42 @@ public class GameCustomize : MonoBehaviour
     }
     public void UpdateTool(int index)
     {
-        if (!IsToolInMaxLevel(index)) StaticData.ToolLevel[index]++;
-        UpdatePanel();
+        if (!StaticData.IsToolInMaxLevel(index)) StaticData.ToolLevel[index]++;
+        UpdateToolPanel();
 
     }
 
-    bool IsToolInMaxLevel(int index)
-    {
-        if (StaticData.ToolLevel[index] < 5) return false;
-        return true;   
-    }
-    void UpdatePanel()
+    
+    private void UpdateToolPanel()
     {
         for(int i = 0;i < toolCount; i++)
         {
             availableTool[i].transform.GetComponentInChildren<Text>(true).text = $"Level {StaticData.ToolLevel[i]}";
-            if(IsToolInMaxLevel(i))
+            if(StaticData.IsToolInMaxLevel(i))
             {
                 availableTool[i].transform.GetComponentInChildren<Button>(true).gameObject.SetActive(false);
             }
+            else
+            {
+                availableTool[i].transform.GetChild(2).gameObject.SetActive(true);
+            }
         }
+    }
+    public void SaveGame()
+    {
+        StaticData.SaveDataToFile();
+    }
+    public void LoadGame()
+    {
+        StaticData.LoadDataFromFile();
+        UpdatePanel();
+    }
+    private void UpdatePanel()
+    {
+        CurrentCoinText.text = $"Currency:{StaticData.CoinNum}";
+
+        InitCarPanel();
+        InitCarSelection();
+        UpdateToolPanel();
     }
 }

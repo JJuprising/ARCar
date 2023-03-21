@@ -96,6 +96,7 @@ public class GetThings : MonoBehaviour
                 PickupEffect = Instantiate(Resources.Load("PickupCoin", typeof(GameObject))) as GameObject;
                 PickupEffect.transform.position = PicupVec;
                 StaticData.CoinNum++;//全局的金币数加一
+                StaticData.totalCoinNum++;
                 Tx_CoinNum.text = StaticData.CoinNum.ToString();//UI金币数文本变化
                 Destroy(other.gameObject);//销毁物体
                 break;
