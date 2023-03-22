@@ -11,7 +11,7 @@ public static class StaticData
 
     public static int totalCoinNum = 200;
 
-    public static bool isObservedFinshed = false;//if all 4 gates were observed
+    public static bool isObservedFinshed = false;//if all 4 gates were observed and enter
 
     public static int[] GateObserved = { 0, 0, 0, 0 };//mark 4 gates observed status
 
@@ -28,7 +28,7 @@ public static class StaticData
     public static int racemode = 0;
 
 
-    public static bool EOGUseTool = false;//眼电触发SocketClient.cs,当为true使用道具
+    public static bool EogUseTool = false;//眼电触发SocketClient.cs,当为true使用道具
 
     
     public static int[] UpgradeCost = {50, 75, 100, 150 };//升级费用，暂时写在这里

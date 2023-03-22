@@ -10,6 +10,7 @@ TagManager:
   - Gate
   - Wire
   - Check
+  - Car
   layers:
   - Default
   - TransparentFX

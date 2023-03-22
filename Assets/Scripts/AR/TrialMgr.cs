@@ -27,13 +27,12 @@ public class TrialMgr : Singleton<TrialMgr>
     public GameObject gate2 = null;
     public GameObject gate3 = null;
     public GameObject gate4 = null;
-    public GameObject StartPlace = null;
     public GameObject CarOwn;//摄像机前的车
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
 
     }
 
@@ -52,7 +51,8 @@ public class TrialMgr : Singleton<TrialMgr>
             TimeRace();
             StaticData.racemode *= 4;//映射到4倍的值，避免重复进入计时
         }
-        //给圈数赋值
+        //GetThing.cs碰到门前的检测体，圈数加一
+        //给圈数赋值 
         CountCir = int.Parse(CirText.text);
 
         if (StaticData.GateObserved[3] == 1)
@@ -64,7 +64,7 @@ public class TrialMgr : Singleton<TrialMgr>
                 //Debug.Log(i + ":" + StaticData.GateObserved[i]);
                 count += StaticData.GateObserved[i];
             }
-            if (count == 4)
+            if (count >= 4)
             {
                 StaticData.isObservedFinshed = true;//识别好了4个，标记为true
 
@@ -116,6 +116,12 @@ public class TrialMgr : Singleton<TrialMgr>
                     }
                     CountTime2 += Time.deltaTime;
                     //print("第二圈完成，记录时间:"+ cirTime[1]);
+                    //三圈之后生成checker 
+                    GameObject checker = Instantiate(Resources.Load("checker", typeof(GameObject)), transform) as GameObject;
+                    Vector3 GateVec = gate1.transform.position;
+                    Vector3 CheckerPos = GateVec - Vector3.up * 0.95f;
+                    checker.transform.parent = gate1.transform;
+                    checker.transform.position = CheckerPos;
                     break;
                 case 4:
                     hour2 = (int)CountTime2 / 3600;
@@ -126,7 +132,7 @@ public class TrialMgr : Singleton<TrialMgr>
 
 
                     totalTime.text = TimeText.text;//记录总时间
-                    StaticData.EndTimeTrial = true;//游戏结束标记
+                    //StaticData.EndTimeTrial = true;//游戏结束标记
                     //print("第三圈完成，记录时间:"+ cirTime[2]);
                     break;
 
@@ -360,6 +366,4 @@ public class TrialMgr : Singleton<TrialMgr>
         GameObject.Find("RaceMenuPanel").SetActive(false);
         StaticData.racemode = Temracemode;
     }
-
-    
 }

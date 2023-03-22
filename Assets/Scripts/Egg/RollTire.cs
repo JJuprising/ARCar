@@ -43,8 +43,9 @@ public class RollTire : Singleton<RollTire>
     {
         StopRolling();
         TurnFront();
-        if (Input.GetKey(KeyCode.W))
+        if (StaticData.EndTimeTrial)
         {
+            //游戏没结束一直前进
             ForwardRolling();
         }else if (Input.GetKey(KeyCode.S))
         {

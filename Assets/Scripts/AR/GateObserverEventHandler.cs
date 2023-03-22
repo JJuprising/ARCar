@@ -280,11 +280,22 @@ public class GateObserverEventHandler : MonoBehaviour
                 if (StaticData.GateObserved[0] == 0)//生成开始装饰等
                 {
                     GameObject StartPlace = Instantiate(Resources.Load("StartPlace", typeof(GameObject)), transform) as GameObject;
+                    
+                    
                     Vector3 GateVec = transform.position;
-                    var SPPos = GateVec - Vector3.up * 0.95f;
+                    
+                    var SPPos = GateVec - Vector3.up * 0.85f;
                     SPPos.z -= 1.5f;
                     StartPlace.transform.position = SPPos;
 
+                }else if(StaticData.GateObserved[0] == 4)
+                {
+                    //三圈之后生成checker 这里最后一圈1号门是识别了4次的
+                    GameObject checker = Instantiate(Resources.Load("checker", typeof(GameObject)), transform) as GameObject;
+                    Vector3 GateVec = transform.position;
+                    Vector3 CheckerPos = GateVec - Vector3.up * 0.95f;
+                    checker.transform.parent = this.transform;
+                    checker.transform.position = CheckerPos;
                 }
 
                 StaticData.GateObserved[0] ++;//NO.0 was marked
@@ -344,17 +355,17 @@ public class GateObserverEventHandler : MonoBehaviour
             var colliderComponents = mObserverBehaviour.GetComponentsInChildren<Collider>(true);
             var canvasComponents = mObserverBehaviour.GetComponentsInChildren<Canvas>(true);
 
-            //// Disable rendering:
-            //foreach (var component in rendererComponents)
-            //    component.enabled = false;
+            // Disable rendering:
+            foreach (var component in rendererComponents)
+                component.enabled = false;
 
-            //// Disable colliders:
-            //foreach (var component in colliderComponents)
-            //    component.enabled = false;
+            // Disable colliders:
+            foreach (var component in colliderComponents)
+                component.enabled = false;
 
-            //// Disable canvas':
-            //foreach (var component in canvasComponents)
-            //    component.enabled = false;
+            // Disable canvas':
+            foreach (var component in canvasComponents)
+                component.enabled = false;
         }
 
         OnTargetLost?.Invoke();

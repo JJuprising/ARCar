@@ -16,11 +16,16 @@ public class GetThings : MonoBehaviour
 
     private void Update()
     {
-        //使用道具
-        if (StaticData.UseItemSign)
+        //当道具栏有道具同时检测到眼电信号，使用道具
+        if (StaticData.UseItemSign&&StaticData.EogUseTool)
         {
-            StaticData.UseItemSign = false;
+            StaticData.UseItemSign = StaticData.EogUseTool=false;
             UseItem();
+        }
+        if(StaticData.UseItemSign==false&& StaticData.EogUseTool)
+        {
+            //道具栏没有道具但是触发了眼电
+            StaticData.EogUseTool = false;
         }
     }
 
@@ -30,7 +35,7 @@ public class GetThings : MonoBehaviour
 
         Vector3 PicupVec = other.transform.position;//拾取对象的位置
         GameObject PickupEffect;//拾取效果
-
+        GameObject Camera = GameObject.Find("AR Camera");
         switch (other.gameObject.name){
             case "StartPlace(Clone)":
                 print("开始");
@@ -38,11 +43,8 @@ public class GetThings : MonoBehaviour
                 GameObject Canvas = GameObject.Find("Canvas");
                 Canvas.transform.Find("RaceMenuPanel").gameObject.SetActive(true);
                 Destroy(other.gameObject, 3f);//销毁物体
-                
-                
-                
                 break;
-
+            
             case "Gate1_ImageTarget":
                 if (StaticData.CheckGatePassingValidity(0))
                 {
@@ -86,7 +88,9 @@ public class GetThings : MonoBehaviour
                 GetGoldenBoxReward();
                 //Pick up effect
                 PickupEffect = Instantiate(Resources.Load("PickupBox", typeof(GameObject))) as GameObject;
-                PickupEffect.transform.position = PicupVec;
+                Vector3 pos1 = Camera.transform.position + Camera.transform.forward * 2;
+                PickupEffect.transform.position = pos1;
+                
                 Destroy(other.gameObject);//销毁物体
                 break;
             case "Coin":
@@ -105,10 +109,19 @@ public class GetThings : MonoBehaviour
                 Destroy(other.gameObject);
                 StaticData.EndTimeTrial = true;//TimeTrial结束标记，交给TrialMgr处理结束界面
                                                //生成finish的提示
-                GameObject finishObject = this.transform.GetChild(0).gameObject;
-                finishObject.SetActive(true);
-                Destroy(finishObject, 2);
+                //GameObject finishObject = Instantiate(Resources.Load("finishSign", typeof(GameObject))) as GameObject; ;
+                //Vector3 pos2 = Camera.transform.position + Camera.transform.forward * 2;
+                //finishObject.transform.position = pos2;
+                //Destroy(finishObject, 5);
                 //打破记录动画
+                break;
+            case "Gate":
+                //经过门，生成特效
+                
+                //Pick up effect
+                PickupEffect = Instantiate(Resources.Load("PickGate", typeof(GameObject))) as GameObject;
+                Vector3 pos = Camera.transform.position+Camera.transform.forward*2;
+                PickupEffect.transform.position = pos;
                 break;
         }
         
@@ -127,7 +140,10 @@ public class GetThings : MonoBehaviour
             StopCoroutine(rolling);
             for (int i = 0; i < ScrollImageParent.childCount; i++)
             {
-                Destroy(ScrollImageParent.GetChild(i).gameObject);
+                if (ScrollImageParent.GetChild(i).gameObject.name != "Panel")
+                {
+                    Destroy(ScrollImageParent.GetChild(i).gameObject);
+                }
             }
         }
     }
@@ -161,7 +177,7 @@ public class GetThings : MonoBehaviour
         end.GetComponent<RawImage>().texture = reward.texture;
         end.GetComponent<ScrollingRawImage>().isFinalReward = true;//最后一轮动画特殊对待
         //Destroy(end, 5f);
-        
+        StaticData.UseItemSign = true;//拾取到道具
     }
     /// <summary>
     /// 使用道具
@@ -206,10 +222,30 @@ public class GetThings : MonoBehaviour
     }
     private void UseBoost()
     {
+        //加速
+        StartCoroutine(DelayAnimate());
+    }
+    private IEnumerator DelayAnimate()
+    {
+        GameObject CarOwn = this.gameObject;
+        print("进入协程");
+        CarOwn.GetComponent<Animator>().SetBool("isBoost", true);
+        //加速后车效果
+        GameObject boostfx = Instantiate(Resources.Load("BoostFx", typeof(GameObject)), transform) as GameObject;
+        //加速后画面效果
+        GameObject Camera = GameObject.Find("AR Camera");
+        boostfx.transform.parent = Camera.transform;
+        Vector3 fxpos = new Vector3(0, -0.06f, 0.663f);
+        boostfx.transform.localPosition = fxpos;
+        yield return new WaitForSeconds(0.25f);
+        CarOwn.GetComponent<Animator>().SetBool("isBoost", false);
+        yield return new WaitForSeconds(1.25f);
+        Destroy(boostfx);//加上前面的0.25就是2秒后销毁画面效果
 
     }
     private void UseBanana()
     {
 
     }
+    
 }
