@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class GetThings : MonoBehaviour
+public class GetThings : Singleton<GetThings>
 {
     public Text Tx_CoinNum;//金币数量
     public Text CirText;//记录圈数
-    private int CountCir=0;//记录当前圈数
+    public int CountCir=0;//记录当前圈数
+    public Reward currentItem;//目前持有的道具
+
     
     [SerializeField] private Transform ScrollImageParent;
 
     [SerializeField]private RewardItem[] rewards;
 
-    Reward currentItem;
+    
 
     private void Update()
     {
@@ -99,9 +101,10 @@ public class GetThings : MonoBehaviour
                 //Pick up effect
                 PickupEffect = Instantiate(Resources.Load("PickupCoin", typeof(GameObject))) as GameObject;
                 PickupEffect.transform.position = PicupVec;
+                StaticData.tempCoinNum++;
                 StaticData.CoinNum++;//全局的金币数加一
                 StaticData.totalCoinNum++;
-                Tx_CoinNum.text = StaticData.CoinNum.ToString();//UI金币数文本变化
+                Tx_CoinNum.text = StaticData.tempCoinNum.ToString();//UI金币数文本变化
                 Destroy(other.gameObject);//销毁物体
                 break;
             case "Finish":
@@ -248,4 +251,11 @@ public class GetThings : MonoBehaviour
 
     }
     
+    public void ResetGame()
+    {
+        Tx_CoinNum.text = "0";//金币数量
+        CirText.text = "0";//记录圈数
+        CountCir = 0;//记录当前圈数
+        StopPreviousRolling();
+    }
 }

@@ -7,6 +7,8 @@ using UnityEngine;
 
 public static class StaticData
 {
+    public static int tempCoinNum = 0;
+
     public static int CoinNum = 100;//½ð±ÒÊýÁ¿
 
     public static int totalCoinNum = 200;
@@ -131,6 +133,18 @@ public static class StaticData
     {
         if (ToolLevel[index] < 5) return false;
         return true;
+    }
+    public static void RestGame()
+    {
+        tempCoinNum = 0;
+        isObservedFinshed = false;
+        for (int i = 0; i < GateObserved.Length; i++)
+        {
+            GateObserved[i] = 0;
+        }
+        EndTimeTrial = false;
+        UseItemSign = false;
+        EOGUseTool = false;
     }
 }
 

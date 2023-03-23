@@ -146,8 +146,13 @@ public class GameCustomize : Singleton<GameCustomize>
     }
     public void UpdateTool(int index)
     {
-        if (!StaticData.IsToolInMaxLevel(index)) StaticData.ToolLevel[index]++;
-        UpdateToolPanel();
+        if (IsToolUpGradeable((Reward)(index + 1))) {
+            StaticData.CoinNum -= StaticData.UpgradeCost[StaticData.ToolLevel[index]-1];
+            StaticData.ToolLevel[index]++;
+        }
+        
+
+        UpdatePanel();
 
     }
 
@@ -157,13 +162,13 @@ public class GameCustomize : Singleton<GameCustomize>
         for(int i = 0;i < toolCount; i++)
         {
             availableTool[i].transform.GetComponentInChildren<Text>(true).text = $"Level {StaticData.ToolLevel[i]}";
-            if(StaticData.IsToolInMaxLevel(i))
+            if(IsToolUpGradeable((Reward)(i+1)))
             {
-                availableTool[i].transform.GetComponentInChildren<Button>(true).gameObject.SetActive(false);
+                availableTool[i].transform.GetChild(2).gameObject.SetActive(true);
             }
             else
             {
-                availableTool[i].transform.GetChild(2).gameObject.SetActive(true);
+                availableTool[i].transform.GetChild(2).gameObject.SetActive(false);
             }
         }
     }

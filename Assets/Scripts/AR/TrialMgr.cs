@@ -308,21 +308,26 @@ public class TrialMgr : Singleton<TrialMgr>
     //重置游戏
     public void ResetGame()
     {
-        StaticData.CoinNum = 0;
-        StaticData.isObservedFinshed = false;
-        for (int i = 0; i < StaticData.GateObserved.Length; i++)
-        {
-            StaticData.GateObserved[i] = 0;
-        }
-        isShowMlSec = false;
-        CountTime = 0;
-        TimeText.text = "";
-        hour = min = sec = 0;
-        msecStr = "";
         CountCir = 0;
+        CountTime = 0;
+        hour = min = sec = 0;
+        CirText.text = "0";
+        totalTime.text = "0";
+        TimeText.text = "0:00.0";
+        msecStr = "";
+        isShowMlSec = false;
+
+    cirTime = new string[3];//记录每一圈时间的字符串
+    CountTime2 = 0;//单圈计时器
+    hour2= min2= sec2=0;
+
+
+    setZero = false;//记录计时器清理，防止重复清0
+    endsign = true;//标记结束函数进入一次
+    m_timer = 0;//结束后计时器
+
 
         //重置面板
-        GameObject Camera = GameObject.Find("AR Camera");
         GameObject Canvas = GameObject.Find("Canvas");
         //显示其余面板
         Canvas.transform.Find("CoinPanel").gameObject.SetActive(true);//金币栏
@@ -336,11 +341,16 @@ public class TrialMgr : Singleton<TrialMgr>
     //按钮事件
     public void Btn_GoToLanuch()
     {
+        
         SceneManager.LoadScene("UI");
+        StaticData.RestGame();
+        SceneManager.UnloadSceneAsync("AR_Scene");
     }
     public void Btn_Reset()
     {
         ResetGame();
+        GetThings.Instance.ResetGame();
+        StaticData.RestGame();
     }
     public void Btn_UseItem()
     {
