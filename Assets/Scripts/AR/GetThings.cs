@@ -96,7 +96,7 @@ public class GetThings : Singleton<GetThings>
 
                 break;
             case "GoldBox":
-                source.PlayClipAtPoint(getBoxSound, 1F);   //捡到道具音效
+                source.PlayOneShot(getBoxSound, 1F);   //捡到道具音效
                 other.gameObject.SetActive(false);
                 GetGoldenBoxReward();
                 //Pick up effect
