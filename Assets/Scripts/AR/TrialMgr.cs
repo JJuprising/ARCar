@@ -116,12 +116,12 @@ public class TrialMgr : Singleton<TrialMgr>
                     }
                     CountTime2 += Time.deltaTime;
                     //print("第二圈完成，记录时间:"+ cirTime[1]);
-                    //三圈之后生成checker 
-                    GameObject checker = Instantiate(Resources.Load("checker", typeof(GameObject)), transform) as GameObject;
-                    Vector3 GateVec = gate1.transform.position;
-                    Vector3 CheckerPos = GateVec - Vector3.up * 0.95f;
-                    checker.transform.parent = gate1.transform;
-                    checker.transform.position = CheckerPos;
+                    ////三圈之后生成checker 
+                    //GameObject checker = Instantiate(Resources.Load("checker", typeof(GameObject)), transform) as GameObject;
+                    //Vector3 GateVec = gate1.transform.position;
+                    //Vector3 CheckerPos = GateVec - Vector3.up * 0.95f;
+                    //checker.transform.parent = gate1.transform;
+                    //checker.transform.position = CheckerPos;
                     break;
                 case 4:
                     hour2 = (int)CountTime2 / 3600;

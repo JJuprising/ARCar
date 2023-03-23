@@ -13,9 +13,17 @@ public class ShowRoom_Mgr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SceneManager.LoadScene("AR_Scene");//跳转到开始游戏界面
-        }
+
+    }
+    public void Btn_Store()
+    {
+        SceneManager.LoadScene("CarSwitch");//跳转到开始游戏界面
+    }
+    /// <summary>
+    /// 开始游戏
+    /// </summary>
+    public void Btn_Start()
+    {
+        SceneManager.LoadScene("AR_Scene");//跳转到开始游戏界面
     }
 }

@@ -288,16 +288,7 @@ public class GateObserverEventHandler : MonoBehaviour
                     SPPos.z -= 1.5f;
                     StartPlace.transform.position = SPPos;
 
-                }else if(StaticData.GateObserved[0] == 4)
-                {
-                    //三圈之后生成checker 这里最后一圈1号门是识别了4次的
-                    GameObject checker = Instantiate(Resources.Load("checker", typeof(GameObject)), transform) as GameObject;
-                    Vector3 GateVec = transform.position;
-                    Vector3 CheckerPos = GateVec - Vector3.up * 0.95f;
-                    checker.transform.parent = this.transform;
-                    checker.transform.position = CheckerPos;
                 }
-
                 StaticData.GateObserved[0] ++;//NO.0 was marked
                 StaticData.printScore();
 

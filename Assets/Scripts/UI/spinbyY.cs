@@ -14,6 +14,6 @@ public class spinbyY : MonoBehaviour
     void Update()
     {
         //ÈÆYÖáÐý×ª
-        this.transform.Rotate(0, 1, 0, Space.World);
+        this.transform.Rotate(0, 0.6f, 0, Space.World);
     }
 }

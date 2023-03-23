@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameCustomize : Singleton<GameCustomize>
@@ -49,7 +50,7 @@ public class GameCustomize : Singleton<GameCustomize>
     {
         for(int i = 0;i< colorCount; i++)
         {
-            ImageUV[i] = i - selectingColorIndex;
+            ImageUV[i] = selectingColorIndex-i;
             RawImage img = availableCarColor[i].GetComponent<RawImage>();
             img.uvRect = new Rect(ImageUV[i], 0, img.uvRect.width, img.uvRect.height);
         }
@@ -79,7 +80,7 @@ public class GameCustomize : Singleton<GameCustomize>
                 selectingColorIndex--;
                 for(int i = 0; i < colorCount; i++)
                 {
-                    ImageUV[i]++;
+                    ImageUV[i]--;
                 }
             }
         }
@@ -90,7 +91,7 @@ public class GameCustomize : Singleton<GameCustomize>
                 selectingColorIndex++;
                 for (int i = 0; i < colorCount; i++)
                 {
-                    ImageUV[i]--;
+                    ImageUV[i]++;
                 }
             }
         }
@@ -182,5 +183,10 @@ public class GameCustomize : Singleton<GameCustomize>
         InitCarPanel();
         InitCarSelection();
         UpdateToolPanel();
+    }
+    ///»Øµ½showroom
+    public void Btn_Confirm()
+    {
+        SceneManager.LoadScene("ShowRoom");
     }
 }
