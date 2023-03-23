@@ -28,11 +28,19 @@ public class TrialMgr : Singleton<TrialMgr>
     public GameObject gate3 = null;
     public GameObject gate4 = null;
     public GameObject CarOwn;//摄像机前的车
+    //音效
+    public AudioClip CountDownSound;  //3秒倒计时
+    public AudioClip WinSound;//结束游戏音效
+    private AudioSource source;   //必须定义AudioSource才能调用AudioClip
+    private AudioSource CarSounce;//车的引擎声
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
+        CarSounce = CarOwn.GetComponent<AudioSource>();
+        source = GetComponent<AudioSource>();  //将this Object 上面的Component赋值给定义的AudioSource
+
 
     }
 
@@ -82,6 +90,7 @@ public class TrialMgr : Singleton<TrialMgr>
             sec = (int)(CountTime - hour * 3600 - min * 60);
             msecStr = isShowMlSec ? ("." + ((int)((CountTime - (int)CountTime) * 10)).ToString("D1")) : "";
             TimeText.text = min.ToString("D2") + ":" + sec.ToString("D2") + msecStr;
+            
         }
         //游戏过程
         if (StaticData.EndTimeTrial == false)
@@ -142,12 +151,19 @@ public class TrialMgr : Singleton<TrialMgr>
         //结束游戏
         if (StaticData.EndTimeTrial && endsign)
         {
+            source.PlayOneShot(WinSound, 1F);   //播放结束游戏声音
             //GetThing.cs检测到Finish被撞击，说明已经经过终点，进入结算界面
             if (m_timer == 0)
             {
+                //Finish文字
                 GameObject Canvas = GameObject.Find("Canvas");
                 GameObject finishimg = Canvas.transform.Find("finishimg").gameObject;
                 finishimg.SetActive(true);
+                //结束特效
+                GameObject Camera = GameObject.Find("AR Camera");
+                GameObject PickupEffect = Instantiate(Resources.Load("finishlight", typeof(GameObject))) as GameObject;
+                Vector3 pos = Camera.transform.position + Camera.transform.forward * 1.28f;
+                PickupEffect.transform.position = pos;
                 Destroy(finishimg, 2);
             }
             m_timer += Time.deltaTime;
@@ -172,9 +188,10 @@ public class TrialMgr : Singleton<TrialMgr>
     //开始计时函数
     public void StartCountTime()
     {
-
+        source.PlayOneShot(CountDownSound, 1F);   //播放声音
         //如果选择计时赛，开始计时，三秒后游戏开始
         StartCoroutine(DelaythreeSec());
+
         //显示游戏面板
         GameObject Canvas = GameObject.Find("Canvas");
         Canvas.transform.Find("ToolsPanel").gameObject.SetActive(true);
@@ -186,6 +203,7 @@ public class TrialMgr : Singleton<TrialMgr>
     //显示倒计时三秒动画
     private IEnumerator DelaythreeSec()
     {
+        
         Vector3 NumberVec = this.transform.position;
         NumberVec.z += 2.5f;//图标相对摄像机位置
         bool isMerge = true;//判断是否已经生成了数字
@@ -251,6 +269,9 @@ public class TrialMgr : Singleton<TrialMgr>
         GO.SetActive(true);
         Destroy(GO, 0.3f);
         isShowMlSec = true;//置为true开始计时
+                           
+        //车引擎音效
+        CarSounce.Play();
     }
     //比赛结束函数
     public void EndTrial()

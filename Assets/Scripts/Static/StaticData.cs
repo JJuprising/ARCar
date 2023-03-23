@@ -144,7 +144,7 @@ public static class StaticData
         }
         EndTimeTrial = false;
         UseItemSign = false;
-        EOGUseTool = false;
+        EogUseTool = false;
     }
 }
 
