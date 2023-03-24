@@ -16,16 +16,18 @@ public class GetThings : Singleton<GetThings>
 
     //音效
     //音效
-    public AudioClip getCoinSound;  //获取金币的音效
-    public AudioClip getBoxSound;  //获取金币的音效
-    public AudioClip boostSound;//加速音效
-    public AudioClip rolltoolSound;//道具栏滚动音效
-    private AudioSource source;   //必须定义AudioSource才能调用AudioClip
+    public AudioSource getBoxsource;   //必须定义AudioSource才能调用AudioClip
+    public AudioSource getCoinsource;
+    public AudioSource boostsource;
+    public AudioSource rolltoolssource;
+    public AudioSource winsource;
+    public AudioSource meetGatesource;
 
     private void Start()
     {
-        source.GetComponent<AudioSource>();
+        
     }
+
     private void Update()
     {
         //当道具栏有道具同时检测到眼电信号，使用道具
@@ -89,6 +91,7 @@ public class GetThings : Singleton<GetThings>
         }
         switch (other.gameObject.tag) {
             case "Check":
+                meetGatesource.Play();//经过门音效
                 //记录圈数
                 CountCir++;//碰到门前的检测体，圈数加一
                 print("CountCir" + CountCir);
@@ -96,7 +99,7 @@ public class GetThings : Singleton<GetThings>
 
                 break;
             case "GoldBox":
-                source.PlayOneShot(getBoxSound, 1F);   //捡到道具音效
+                getBoxsource.Play();//吃盒子音效
                 other.gameObject.SetActive(false);
                 GetGoldenBoxReward();
                 //Pick up effect
@@ -107,7 +110,7 @@ public class GetThings : Singleton<GetThings>
                 Destroy(other.gameObject);//销毁物体
                 break;
             case "Coin":
-                source.PlayOneShot(getCoinSound, 1F);   //吃金币音效
+                getCoinsource.Play();//吃金币音效
                 Destroy(other.gameObject);
                 Debug.Log("捡到金币");
                 //Pick up effect
@@ -126,6 +129,7 @@ public class GetThings : Singleton<GetThings>
                 {
                     StaticData.EndTimeTrial = true;//TimeTrial结束标记，交给TrialMgr处理结束界面
                                                    //生成finish的提示
+                    winsource.Play();//结束游戏音效
                 }
 
                 //GameObject finishObject = Instantiate(Resources.Load("finishSign", typeof(GameObject))) as GameObject; ;
@@ -171,7 +175,7 @@ public class GetThings : Singleton<GetThings>
     /// </summary>
     private void GetGoldenBoxReward()
     {
-        source.PlayOneShot(rolltoolSound, 1F);   //道具滚动音效
+        rolltoolssource.Play();//道具栏音效
         RewardItem reward = rewards[Random.Range(0, rewards.Length)];
         rolling = StartCoroutine(RollingAward(reward));
     }
@@ -238,13 +242,15 @@ public class GetThings : Singleton<GetThings>
         //三秒后销毁炮弹
         Destroy(bullet, 5);
         //音效
-        GetComponent<AudioSource>().Play();
+        //GetComponent<AudioSource>().Play();
     }
     private void UseBoost()
     {
+        //加速音效
+        boostsource.Play();
         //加速
         StartCoroutine(DelayAnimate());
-        source.PlayOneShot(boostSound, 1F);   //加速音效
+
     }
     private IEnumerator DelayAnimate()
     {
