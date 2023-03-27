@@ -26,4 +26,8 @@ public class ShowRoom_Mgr : MonoBehaviour
     {
         SceneManager.LoadScene("AR_Scene");//跳转到开始游戏界面
     }
+    public void Btn_Back()
+    {
+        SceneManager.LoadScene("UI");//跳转到开始游戏界面
+    }
 }

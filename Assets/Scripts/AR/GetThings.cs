@@ -187,9 +187,9 @@ public class GetThings : Singleton<GetThings>
     {
         StopPreviousRolling();//先停止之前的rolling
         currentItem = reward.reward;//设置道具
-        for (int j = 0; j < 2; j++)//循环播放随机动画
+        for (int j = 0; j < 3; j++)//循环播放随机动画
         {
-            for (int i = 0; i < rewards.Length; i++)
+            for (int i = 0; i < rewards.Length-1; i++)
             {
                 GameObject go = Instantiate(Resources.Load<GameObject>("ScrollingItem"),ScrollImageParent);
                 go.GetComponent<RawImage>().texture = rewards[i].texture;//设置贴图
@@ -219,6 +219,9 @@ public class GetThings : Singleton<GetThings>
                 break;
             case Reward.banana:
                 UseBanana();
+                break;
+            case Reward.magnet:
+                UseMagnet();
                 break;
             default:
                 break;
@@ -269,6 +272,14 @@ public class GetThings : Singleton<GetThings>
         yield return new WaitForSeconds(1.25f);
         Destroy(boostfx);//加上前面的0.25就是2秒后销毁画面效果
 
+    }
+    public void UseMagnet()
+    {
+        GameObject[] go = GameObject.FindGameObjectsWithTag("Coin");
+        foreach (GameObject coin in go)
+        {
+            coin.AddComponent<Magnet>();
+        }
     }
     private void UseBanana()
     {

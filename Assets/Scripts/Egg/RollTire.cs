@@ -43,6 +43,7 @@ public class RollTire : Singleton<RollTire>
     {
         StopRolling();
         TurnFront();
+        long steersign = StaticData.Eegsteerscore;
         if (StaticData.EndTimeTrial)
         {
             //游戏没结束一直前进
@@ -51,11 +52,11 @@ public class RollTire : Singleton<RollTire>
         {
             BackwardRolling();
         }
-        if (Input.GetKey(KeyCode.A))
+        if (steersign<850)
         {
             TurnLeft();
         }
-        else if(Input.GetKey(KeyCode.D))
+        else if(steersign>1150)
         {
             TurnRight();
         }

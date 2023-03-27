@@ -108,7 +108,7 @@ public class SocketClient : MonoBehaviour
                     String message = Encoding.UTF8.GetString(result, 0, receiveNumber);
                     string[] b = message.Split(',');
                     string EOGMes = b[0][1..];
-
+                    StaticData.Eegsteerscore = long.Parse(b[12][1..]);//陀螺仪数值
                     if (long.Parse(EOGMes) < 100)
                     {
                         //眼电小于100μV，触发使用道具

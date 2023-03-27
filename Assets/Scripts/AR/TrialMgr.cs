@@ -362,13 +362,14 @@ public class TrialMgr : Singleton<TrialMgr>
     //按钮事件
     public void Btn_GoToLanuch()
     {
-        
+        StaticData.SaveDataToFile();//保存游戏
         SceneManager.LoadScene("UI");
         StaticData.RestGame();
         SceneManager.UnloadSceneAsync("AR_Scene");
     }
     public void Btn_Reset()
     {
+        StaticData.SaveDataToFile();//保存游戏
         ResetGame();
         GetThings.Instance.ResetGame();
         StaticData.RestGame();

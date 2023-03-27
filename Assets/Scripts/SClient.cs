@@ -6,7 +6,7 @@ using System.Net;
 using System.IO;
 using System;
 
-public class Client : MonoBehaviour
+public class SClient : MonoBehaviour
 {
 	public RawImage image;
 	public bool enableLog = false;

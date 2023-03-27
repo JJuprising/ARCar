@@ -310,11 +310,14 @@ public class GateObserverEventHandler : MonoBehaviour
             case "gate3":
                 GameObject g3 = GameObject.Find("Gate1_ImageTarget");
                 Vector3 worldPosition3 = g3.transform.position;
-                if (StaticData.GateObserved[2]==0)
-                {
-                    SummonCoins();
-                }
-                
+                GameObject coingroup = Instantiate(Resources.Load("CoinGroup", typeof(GameObject)), transform) as GameObject;
+                Vector3 pos1= worldPosition3- Vector3.up * 0.85f;
+                coingroup.transform.position = pos1;
+                //if (StaticData.GateObserved[2] == 0)
+                //{
+                //    SummonCoins();
+                //}
+
                 //记录识别状态
                 StaticData.GateObserved[2]++;//NO.2 was marked
  
@@ -327,7 +330,7 @@ public class GateObserverEventHandler : MonoBehaviour
                 Vector3 worldPosition2 = g4.transform.position;
                 string worldPositionStr2 = "1号门位置 " + worldPosition2.x + ", " + worldPosition2.y + ", " + worldPosition2.z;
                 Debug.Log(worldPositionStr2);
-
+                SummonCoins();
                 break;
             default:
                 break;
@@ -357,6 +360,9 @@ public class GateObserverEventHandler : MonoBehaviour
             // Disable canvas':
             foreach (var component in canvasComponents)
                 component.enabled = false;
+
+
+            this.transform.position = Vector3.one * 100f;
         }
 
         OnTargetLost?.Invoke();
