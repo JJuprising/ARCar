@@ -190,14 +190,16 @@ public class TrialMgr : Singleton<TrialMgr>
     {
         source.PlayOneShot(CountDownSound, 1F);   //播放声音
         //如果选择计时赛，开始计时，三秒后游戏开始
-        StartCoroutine(DelaythreeSec());
-
         //显示游戏面板
         GameObject Canvas = GameObject.Find("Canvas");
         Canvas.transform.Find("ToolsPanel").gameObject.SetActive(true);
         Canvas.transform.Find("CoinPanel").gameObject.SetActive(true);
         Canvas.transform.Find("CirPanel").gameObject.SetActive(true);
         Canvas.transform.Find("CountPanel").gameObject.SetActive(true);
+        Canvas.transform.Find("CountDownPanel").gameObject.SetActive(true);
+        StartCoroutine(DelaythreeSec());
+
+        
     }
     //计时函数
     //显示倒计时三秒动画
@@ -214,6 +216,7 @@ public class TrialMgr : Singleton<TrialMgr>
         GameObject number2 = canvas.transform.Find("number2").gameObject;
         GameObject number3 = canvas.transform.Find("number3").gameObject;
         GameObject GO = canvas.transform.Find("GO").gameObject;
+        //AIControl.Instance.SetCarActive();//显示小车
         while (time < 3)
         {
             time += Time.deltaTime;
@@ -269,7 +272,7 @@ public class TrialMgr : Singleton<TrialMgr>
         GO.SetActive(true);
         Destroy(GO, 0.3f);
         isShowMlSec = true;//置为true开始计时
-                           
+        //AIControl.Instance.StartMove(); //对手开始移动                  
         //车引擎音效
         CarSounce.Play();
     }

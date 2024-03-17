@@ -8,6 +8,7 @@ public class GetThings : Singleton<GetThings>
     public Text CirText;//记录圈数
     public int CountCir=0;//记录当前圈数
     public Reward currentItem;//目前持有的道具
+    [SerializeField] Transform bulletParent;   
 
     
     [SerializeField] private Transform ScrollImageParent;
@@ -125,12 +126,11 @@ public class GetThings : Singleton<GetThings>
             case "Finish":
                 print("通过Finish物体");
                 Destroy(other.gameObject);
-                if (CountCir == 4)
-                {
-                    StaticData.EndTimeTrial = true;//TimeTrial结束标记，交给TrialMgr处理结束界面
+                
+                StaticData.EndTimeTrial = true;//TimeTrial结束标记，交给TrialMgr处理结束界面
                                                    //生成finish的提示
-                    winsource.Play();//结束游戏音效
-                }
+                winsource.Play();//结束游戏音效
+                
 
                 //GameObject finishObject = Instantiate(Resources.Load("finishSign", typeof(GameObject))) as GameObject; ;
                 //Vector3 pos2 = Camera.transform.position + Camera.transform.forward * 2;
@@ -229,19 +229,21 @@ public class GetThings : Singleton<GetThings>
         StopPreviousRolling();
         
     }
-    private void UseBullet()
+    public void UseBullet()
     {
         //生成炮弹
-        GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject))) as GameObject;
+        GameObject bullet = Instantiate(Resources.Load("Bullet", typeof(GameObject)),bulletParent) as GameObject;
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         Transform bulletRot = Camera.main.transform.GetChild(0);
-        Vector3 bulletPos = Camera.main.transform.position;
+
         bullet.transform.localEulerAngles = new Vector3(bulletRot.rotation.x - 20, bulletRot.rotation.y, bulletRot.rotation.z); ;
-        bulletPos.y -= (float)(0.7);
-        bullet.transform.position = bulletPos;
+        
+        bullet.transform.localPosition = new Vector3(0,-0.1f,0.3f);
+        bullet.transform.localScale = Vector3.one * 5f;
         bullet.transform.eulerAngles = Camera.main.transform.forward;
         //加力，推动炮弹
-        rb.AddForce(Camera.main.transform.forward * 800f);
+        //rb.AddForce(Camera.main.transform.forward * 150f);
+        bullet.AddComponent<BulletBehaviour>();
         //三秒后销毁炮弹
         Destroy(bullet, 5);
         //音效

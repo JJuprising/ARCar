@@ -1,28 +1,62 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class AIControl : MonoBehaviour
+public class AIControl : Singleton<AIControl>
 {
-    Rigidbody rb;
-    [SerializeField] float speed = 5f;
-    private void OnEnable()
+    [SerializeField] GameObject car1;
+    [SerializeField] GameObject car2;
+    [SerializeField] float speed1 = 0.6f;
+    [SerializeField] float speed2 = 0.8f;
+    [SerializeField] bool canMove = false;
+    [SerializeField] bool isHit = false;
+    [SerializeField] GameObject effect;
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        car1.SetActive(false);
+        car2.SetActive(false);
+    }
+    public void SetCarActive()
+    {
+        car1.SetActive(true);
+        car2.SetActive(true);
+    }
+    public void StartMove()
+    {
+        canMove = true;
+    }
+    public void HitLeftCar()
+    {
+        isHit = true;
+        GameObject go =  Instantiate(effect,car1.transform);
+        go.transform.localPosition = Vector3.zero;
+
     }
     private void Update()
     {
-        if (AIManager.Instance.isStart)
+        if (canMove)
         {
-            Move();
+            
+            if (isHit)
+            {
+                Vector3 pos = car1.transform.position;
+                pos.z -= Time.deltaTime * speed1;
+                car1.transform.position = pos;
+
+                pos = car2.transform.position;
+                pos.z += Time.deltaTime * speed2;
+                car2.transform.position = pos;
+            }
+            else
+            {
+                Vector3 pos = car1.transform.position;
+                pos.z += Time.deltaTime * speed1;
+                car1.transform.position = pos;
+
+                pos = car2.transform.position;
+                pos.z += Time.deltaTime * speed2;
+                car2.transform.position = pos;
+            }
+            
         }
     }
-    private void Move()
-    {
-            Vector3 delta = Camera.main.transform.position - transform.position;
-            float distance = delta.magnitude;
-            distance = distance > 1f ? distance : 0f;
-            rb.MovePosition(Vector3.MoveTowards(transform.position, Camera.main.transform.position + delta.normalized, distance * Time.deltaTime*speed));//
-    }
+
 }
